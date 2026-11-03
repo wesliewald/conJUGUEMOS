@@ -897,6 +897,9 @@ function setMode(m) {
   $('#conc-panel').hidden = m !== 'conc';
   $('#drill-panel').hidden = m !== 'drill';
   $('#drill-settings').hidden = m !== 'drill';
+  // Clear the inactive panel so only one answer box exists on the page
+  if (m === 'drill') $('#conc-sentence').innerHTML = '';
+  else $('#drill-prompt').innerHTML = '';
   next();
 }
 
