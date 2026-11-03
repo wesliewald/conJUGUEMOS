@@ -160,6 +160,14 @@ input.is-bad { border-bottom-color: var(--granate); color: var(--granate); text-
 .settings legend { font-size: .9rem; color: var(--muted); margin-bottom: .35rem; }
 .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .25rem 1rem; }
 .checks label { display: flex; gap: .45rem; align-items: baseline; }
+.prefs { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; margin-top: 1rem; font-size: .95rem; color: var(--muted); }
+.prefs label { display: inline-flex; align-items: center; gap: .45rem; cursor: pointer; }
+.prefs input { width: 1.05rem; height: 1.05rem; accent-color: var(--azul); }
+.d-en, .h-en { color: var(--muted); font-weight: 400; }
+.h-en { display: block; font-family: var(--sans); font-size: .82rem; }
+.vos-row th { color: var(--azul); }
+.vos-box { margin-top: 2.2rem; padding: 1rem 1.25rem; border-left: 4px solid var(--azul); background: var(--azul-tint); border-radius: 0 10px 10px 0; }
+.vos-box h3 { margin-top: 0 !important; }
 footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var(--muted); font-size: .9rem; }
 
 @media (max-width: 760px) {
@@ -175,6 +183,11 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
     <div class="brand">
       <h1>Concordancia</h1>
       <p>Tiempos verbales y conjugación para estudiantes de nivel avanzado</p>
+      <div class="prefs" role="group" aria-label="Preferencias">
+        <label><input type="checkbox" id="pref-vosotros"> Incluir vosotros</label>
+        <label><input type="checkbox" id="pref-vos"> Incluir vos</label>
+        <label><input type="checkbox" id="pref-en"> Explicaciones en inglés</label>
+      </div>
     </div>
     <nav class="tabs" aria-label="Secciones">
       <a href="#concordancia" data-tab="concordancia">Concordancia</a>
@@ -192,26 +205,26 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
       <p class="rule-line" id="b-rule"></p>
       <div class="lanes">
         <div class="lane" id="lane-pres">
-          <div class="lane-label">Mundo presente<small>El verbo principal mira desde ahora</small></div>
+          <div class="lane-label">Mundo presente<small data-en="The main verb looks out from now">El verbo principal mira desde ahora</small></div>
           <div class="chips"></div>
           <div class="res"><span class="res-name"></span><span class="res-form"></span></div>
         </div>
         <div class="lane" id="lane-past">
-          <div class="lane-label">Mundo pasado<small>El verbo principal mira desde antes</small></div>
+          <div class="lane-label">Mundo pasado<small data-en="The main verb looks out from the past">El verbo principal mira desde antes</small></div>
           <div class="chips"></div>
           <div class="res"><span class="res-name"></span><span class="res-form"></span></div>
         </div>
       </div>
       <div class="controls">
-        <div class="ctl"><span class="ctl-name">La acción subordinada es</span>
-          <div class="segs"><button type="button" class="seg" data-timing="sim">simultánea o posterior</button><button type="button" class="seg" data-timing="ant">anterior</button></div>
+        <div class="ctl"><span class="ctl-name" data-en="The subordinate action is">La acción subordinada es</span>
+          <div class="segs"><button type="button" class="seg" data-timing="sim" data-en="simultaneous or later">simultánea o posterior</button><button type="button" class="seg" data-timing="ant" data-en="earlier">anterior</button></div>
         </div>
-        <div class="ctl"><span class="ctl-name">Sujeto de la subordinada</span><div class="segs" id="b-persons"></div></div>
-        <div class="ctl"><label for="b-verb">Verbo subordinado</label><input id="b-verb" class="text-in" value="venir" list="verbs" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+        <div class="ctl"><span class="ctl-name" data-en="Subject of the subordinate clause">Sujeto de la subordinada</span><div class="segs" id="b-persons"></div></div>
+        <div class="ctl"><label for="b-verb" data-en="Subordinate verb">Verbo subordinado</label><input id="b-verb" class="text-in" value="venir" list="verbs" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
       </div>
     </div>
 
-    <article class="rules">
+    <article class="rules" data-lang="es">
       <h2>La regla general</h2>
       <p>La concordancia de tiempos decide qué tiempo usamos en la oración subordinada. La pregunta clave es desde qué «mundo» habla el verbo principal: si está anclado en el presente o en el pasado. Después, basta con saber si la acción subordinada ocurre al mismo tiempo o después, o si ya había ocurrido antes.</p>
       <div class="scroll">
@@ -272,6 +285,77 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
           </tbody>
         </table>
       </div>
+      <div class="vos-box" data-vos-only hidden>
+        <h3>El voseo y la concordancia</h3>
+        <p>Vos sigue exactamente las mismas reglas de concordancia. Solo tiene formas propias en el presente de indicativo (<span class="ex">vos tenés, podés, sos</span>) y en el imperativo afirmativo (<span class="ex">tené, decí, andá</span>). En el subjuntivo, la norma culta usa las formas de tú (<span class="ex">quiero que vengas, quería que vinieras</span>), aunque en el habla también son frecuentes las formas agudas (<span class="ex">que vengás, no vengás</span>).</p>
+      </div>
+    </article>
+    <article class="rules" data-lang="en" lang="en" hidden>
+      <h2>The general rule</h2>
+      <p>The sequence of tenses determines which tense goes in the subordinate clause. The key question is which “world” the main verb speaks from: is it anchored in the present or in the past? Then you only need to know whether the subordinate action happens at the same time or later, or whether it had already happened before.</p>
+      <div class="scroll">
+        <table class="ref">
+          <thead><tr><th scope="col">Main verb</th><th scope="col">Simultaneous or later action</th><th scope="col">Earlier action</th></tr></thead>
+          <tbody>
+            <tr class="row-pres"><th scope="row">Present world<br><em>present, present perfect, future, future perfect, command</em></th>
+              <td>Present subjunctive<br><em>Quiero que vengas.</em></td><td>Present perfect subjunctive<br><em>Me alegra que hayas venido.</em></td></tr>
+            <tr class="row-past"><th scope="row">Past world<br><em>imperfect, preterite, pluperfect, conditional, conditional perfect</em></th>
+              <td>Imperfect subjunctive<br><em>Quería que vinieras.</em></td><td>Pluperfect subjunctive<br><em>Me alegró que hubieras venido.</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Cases worth reviewing</h3>
+      <dl class="cases">
+        <dt>A present main verb looking back at the past</dt>
+        <dd>When the main verb is in the present but the subordinate action is already over, both the imperfect and the present perfect subjunctive are possible. <span class="ex">No creo que lo dijera. No creo que lo haya dicho.</span></dd>
+        <dt>The present perfect sits on the border</dt>
+        <dd>It belongs to the present world, but many speakers also pair it with the imperfect subjunctive. <span class="ex">Te he pedido que vengas. Te he pedido que vinieras.</span></dd>
+        <dt>The conditional always pulls toward the past</dt>
+        <dd>Even when it expresses a wish about the future, the conditional calls for the imperfect subjunctive. <span class="ex">Me gustaría que vinieras mañana.</span></dd>
+        <dt>Como si</dt>
+        <dd>It always takes the imperfect or pluperfect subjunctive, whatever the tense of the main verb. <span class="ex">Habla como si fuera el jefe. Me miró como si no me hubiera visto nunca.</span></dd>
+        <dt>Ojalá</dt>
+        <dd>The tense signals how likely the wish is. Present: a possible wish (<span class="ex">ojalá llueva</span>). Imperfect: an unlikely or impossible wish about now (<span class="ex">ojalá estuvieras aquí</span>). Pluperfect: regret about the past (<span class="ex">ojalá no lo hubiera dicho</span>).</dd>
+        <dt>Cuando, en cuanto, hasta que and antes de que</dt>
+        <dd>With a future action they take the subjunctive, never the future tense. When that future is seen from the past, the subjunctive shifts to the imperfect. <span class="ex">Te llamaré cuando llegue. Dijo que me llamaría cuando llegara.</span> Antes de que always requires the subjunctive.</dd>
+      </dl>
+
+      <h3>Conditional sentences with si</h3>
+      <div class="scroll">
+        <table class="ref">
+          <thead><tr><th scope="col">Type</th><th scope="col">Condition (si…)</th><th scope="col">Result</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Real or likely</th><td>present indicative<br><em>Si llueve,</em></td><td>present, future or command<br><em>nos quedamos / nos quedaremos / quédate.</em></td></tr>
+            <tr><th scope="row">Unlikely or contrary to the present</th><td>imperfect subjunctive<br><em>Si tuviera tiempo,</em></td><td>conditional<br><em>viajaría más.</em></td></tr>
+            <tr><th scope="row">Contrary to the past</th><td>pluperfect subjunctive<br><em>Si lo hubiera sabido,</em></td><td>conditional perfect or pluperfect subjunctive<br><em>habría venido / hubiera venido.</em></td></tr>
+            <tr><th scope="row">Mixed</th><td>pluperfect subjunctive<br><em>Si hubiera estudiado medicina,</em></td><td>conditional<br><em>ahora sería médica.</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The present subjunctive never follows si, and in standard Spanish neither does the conditional.</p>
+
+      <h3>Reported speech in the past</h3>
+      <p>When the verb that introduces someone else’s words is in the past (dijo, contó, explicó), the tenses shift back one step.</p>
+      <div class="scroll">
+        <table class="ref">
+          <thead><tr><th scope="col">Direct speech</th><th scope="col">Reported speech</th></tr></thead>
+          <tbody>
+            <tr><td>present<br><em>«Estoy cansado».</em></td><td>imperfect<br><em>Dijo que estaba cansado.</em></td></tr>
+            <tr><td>preterite or present perfect<br><em>«Perdí las llaves». «He terminado».</em></td><td>pluperfect<br><em>Dijo que había perdido las llaves / que había terminado.</em></td></tr>
+            <tr><td>future<br><em>«Vendré mañana».</em></td><td>conditional<br><em>Dijo que vendría al día siguiente.</em></td></tr>
+            <tr><td>future perfect<br><em>«Habré terminado».</em></td><td>conditional perfect<br><em>Dijo que habría terminado.</em></td></tr>
+            <tr><td>command<br><em>«Ven».</em></td><td>imperfect subjunctive<br><em>Me dijo que viniera.</em></td></tr>
+            <tr><td>present subjunctive<br><em>«Quiero que vengas».</em></td><td>imperfect subjunctive<br><em>Dijo que quería que viniera.</em></td></tr>
+            <tr><td>imperfect, pluperfect, conditional</td><td>no change<br><em>«Vivía en Lima». Dijo que vivía en Lima.</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="vos-box" data-vos-only hidden>
+        <h3>Voseo and the sequence of tenses</h3>
+        <p>Vos follows exactly the same sequence-of-tense rules. It only has its own forms in the present indicative (<span class="ex">vos tenés, podés, sos</span>) and the affirmative command (<span class="ex">tené, decí, andá</span>). In the subjunctive, educated usage takes the tú forms (<span class="ex">quiero que vengas, quería que vinieras</span>), although the stressed forms (<span class="ex">que vengás, no vengás</span>) are also common in speech.</p>
+      </div>
     </article>
   </section>
 
@@ -282,7 +366,7 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
       <input id="conj-input" class="text-in" placeholder="Escribe un infinitivo" list="verbs" autocomplete="off" autocapitalize="off" spellcheck="false" value="tener">
       <button class="btn" type="submit">Conjugar</button>
     </form>
-    <div class="try">Prueba con:
+    <div class="try"><span data-en="Try:">Prueba con:</span>
       <button type="button" data-try="ser">ser</button><button type="button" data-try="ir">ir</button><button type="button" data-try="pedir">pedir</button><button type="button" data-try="construir">construir</button><button type="button" data-try="conducir">conducir</button><button type="button" data-try="oír">oír</button><button type="button" data-try="prever">prever</button><button type="button" data-try="averiguar">averiguar</button>
     </div>
     <div id="conj-out" aria-live="polite"></div>
@@ -296,14 +380,14 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
         <button type="button" class="seg" data-mode="drill">Conjugación</button>
       </div>
       <div class="p-opts">
-        <label><input type="checkbox" id="opt-lenient"> Aceptar respuestas sin tildes</label>
+        <label><input type="checkbox" id="opt-lenient"> <span data-en="Accept answers without accents">Aceptar respuestas sin tildes</span></label>
         <span id="score" aria-live="polite"></span>
       </div>
     </div>
 
     <div class="card">
       <div id="conc-panel">
-        <p class="ctl"><label for="conc-cat">Tipo de oración</label><select id="conc-cat" class="text-in"></select></p>
+        <p class="ctl"><label for="conc-cat" data-en="Sentence type">Tipo de oración</label><select id="conc-cat" class="text-in"></select></p>
         <p class="conc-sentence" id="conc-sentence"></p>
       </div>
       <div id="drill-panel" hidden>
@@ -318,14 +402,14 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
     </div>
 
     <details class="settings" id="drill-settings">
-      <summary>Ajustes de la práctica de conjugación</summary>
-      <fieldset><legend>Tiempos</legend><div class="checks" id="dt-box"></div></fieldset>
-      <fieldset><legend>Verbos</legend><div class="checks" id="dg-box"></div></fieldset>
+      <summary data-en="Conjugation practice settings">Ajustes de la práctica de conjugación</summary>
+      <fieldset><legend data-en="Tenses">Tiempos</legend><div class="checks" id="dt-box"></div></fieldset>
+      <fieldset><legend data-en="Verbs">Verbos</legend><div class="checks" id="dg-box"></div></fieldset>
     </details>
   </section>
 </main>
 
-<footer><div class="wrap">Las formas se generan con reglas y una lista de irregulares; ante cualquier duda, consulta el Diccionario panhispánico de dudas de la RAE.</div></footer>
+<footer><div class="wrap" data-en="Forms are generated from rules and a list of irregular verbs; when in doubt, check the RAE’s Diccionario panhispánico de dudas.">Las formas se generan con reglas y una lista de irregulares; ante cualquier duda, consulta el Diccionario panhispánico de dudas de la RAE.</div></footer>
 <datalist id="verbs"></datalist>
 
 <script>
@@ -572,8 +656,8 @@ function addCompounds(r) {
 function conjugate(raw) {
   let inf = (raw || '').trim().toLowerCase();
   const notes = [];
-  if (/(ar|er|ir|ír)se$/.test(inf)) { inf = inf.slice(0, -2); notes.push('Se muestra sin el pronombre reflexivo (me, te, se, nos, os, se).'); }
-  if (!/^[a-zñáéíóúü]*(ar|er|ir|ír)$/.test(inf) || inf.length < 2) return { error: 'Escribe un infinitivo terminado en -ar, -er o -ir (por ejemplo: cantar, volver, pedir).' };
+  if (/(ar|er|ir|ír)se$/.test(inf)) { inf = inf.slice(0, -2); notes.push({ k: 'refl' }); }
+  if (!/^[a-zñáéíóúü]*(ar|er|ir|ír)$/.test(inf) || inf.length < 2) return { error: 'inf' };
   let r, reg;
   if (COMP[inf]) {
     const base = COMP[inf], pre = inf.slice(0, inf.length - base.length);
@@ -583,7 +667,7 @@ function conjugate(raw) {
     r.ger = pre + b.ger; r.part = pre + b.part;
     if (base === 'decir') { r.imp[1] = r.presInd[2]; }
     if (inf === 'freír') r.part = 'frito';
-    notes.push('Se conjuga como ' + base + '.');
+    notes.push({ k: 'like', base });
   } else {
     r = core(inf);
   }
@@ -591,7 +675,7 @@ function conjugate(raw) {
   addCompounds(r); addCompounds(reg);
   r.inf = inf; r.notes = notes;
   r.known = !!(IRR[inf] || COMP[inf] || SC[inf] || ALL_VERBS.includes(inf));
-  r.reg = reg;
+  reg.inf = inf; r.reg = reg;
   return r;
 }
 
@@ -603,11 +687,58 @@ const VERB_LIST = {
 };
 const ALL_VERBS = Object.values(VERB_LIST).join(' ').split(' ').concat(['llover', 'anochecer', 'nevar']);
 
-if (typeof module !== 'undefined') module.exports = { conjugate, PRON, VERB_LIST };
+/* Voseo: formas propias solo en presente de indicativo e imperativo afirmativo */
+const toVos = s => s.replace(/iais$/, 'iás').replace(/áis$/, 'ás').replace(/éis$/, 'és').replace(/ais$/, 'as').replace(/eis$/, 'es');
+function vosForms(r, key) {
+  const sub = toVos(r.presSubj[4]);
+  const uniq = a => [...new Set(a)];
+  switch (key) {
+    case 'presInd':
+      if (r.inf === 'ser') return ['sos'];
+      if (r.inf === 'haber') return ['has'];
+      return [toVos(r.presInd[4])];
+    case 'imp': {
+      if (r.inf === 'ir') return ['andá'];
+      if (r.inf === 'ser') return ['sé'];
+      const w = r.imp[4].slice(0, -1);
+      return [/[áéíóú]/.test(w) || sylls(w) === 1 ? w : accentLast(w)];
+    }
+    case 'presSubj': return uniq([r.presSubj[1], sub]);
+    case 'impNeg': return uniq(['no ' + r.presSubj[1], 'no ' + sub]);
+    case 'impfSubj': return [r.impfSubjRa[1], r.impfSubjSe[1]];
+    case 'pluscSubj': return [r.pluscSubjRa[1], r.pluscSubjSe[1]];
+    case 'impfSubjRa': case 'impfSubjSe': case 'pluscSubjRa': case 'pluscSubjSe':
+    default: return [r[key][1]];
+  }
+}
+
+if (typeof module !== 'undefined') module.exports = { conjugate, PRON, VERB_LIST, vosForms };
 
 </script>
 <script>
-/* ===== Datos de la interfaz ===== */
+/* ===== Preferencias (se guardan en el navegador) ===== */
+const PREF_KEY = 'concordancia-prefs';
+const PREF = { vosotros: true, vos: false, en: false };
+try { Object.assign(PREF, JSON.parse(localStorage.getItem(PREF_KEY) || '{}')); } catch (e) { }
+function savePrefs() { try { localStorage.setItem(PREF_KEY, JSON.stringify(PREF)); } catch (e) { } }
+const L = (es, en) => PREF.en ? en : es;
+
+/* ===== Personas ===== */
+// p: 0–5 = yo…ellos; 'vos' = voseo
+const PERSONS = [
+  { p: 0, label: 'yo', short: 'yo' },
+  { p: 1, label: 'tú', short: 'tú' },
+  { p: 'vos', label: 'vos', short: 'vos' },
+  { p: 2, label: 'él / ella / usted', short: 'él' },
+  { p: 3, label: 'nosotros/as', short: 'nosotros' },
+  { p: 4, label: 'vosotros/as', short: 'vosotros' },
+  { p: 5, label: 'ellos / ellas / ustedes', short: 'ellos' }
+];
+const activePersons = () => PERSONS.filter(x => (x.p !== 4 || PREF.vosotros) && (x.p !== 'vos' || PREF.vos));
+const shortOf = p => PERSONS.find(x => x.p === p).short;
+const labelOf = p => PERSONS.find(x => x.p === p).label;
+
+/* ===== Nombres de los tiempos ===== */
 const TN = {
   presInd: 'presente de indicativo', pret: 'pretérito indefinido', impf: 'pretérito imperfecto de indicativo',
   fut: 'futuro simple', cond: 'condicional simple', perf: 'pretérito perfecto compuesto',
@@ -617,80 +748,127 @@ const TN = {
   futSubj: 'futuro de subjuntivo', futPerfSubj: 'futuro compuesto de subjuntivo',
   imp: 'imperativo afirmativo', impNeg: 'imperativo negativo'
 };
+const TN_EN = {
+  presInd: 'present indicative', pret: 'preterite', impf: 'imperfect indicative',
+  fut: 'future', cond: 'conditional', perf: 'present perfect',
+  plusc: 'pluperfect indicative', pretAnt: 'preterite perfect', futPerf: 'future perfect',
+  condPerf: 'conditional perfect', presSubj: 'present subjunctive', impfSubj: 'imperfect subjunctive',
+  perfSubj: 'present perfect subjunctive', pluscSubj: 'pluperfect subjunctive',
+  futSubj: 'future subjunctive', futPerfSubj: 'future perfect subjunctive',
+  imp: 'affirmative command', impNeg: 'negative command'
+};
 
+/* ===== Formación de los tiempos: [clave, nombre, español, inglés] ===== */
 const SECTIONS = [
   { title: 'Indicativo', tenses: [
-    ['presInd', 'Presente', 'Raíz + -o, -as/-es, -a/-e, -amos/-emos/-imos, -áis/-éis/-ís, -an/-en. Los cambios de raíz (e→ie, o→ue, e→i) aparecen en todas las personas menos nosotros y vosotros.'],
-    ['pret', 'Pretérito indefinido', '-ar: -é, -aste, -ó, -amos, -asteis, -aron. -er/-ir: -í, -iste, -ió, -imos, -isteis, -ieron. Los pretéritos fuertes (tuv-, pud-, hic-, dij-…) no llevan tilde: tuve, tuvo. Los verbos en -ir con cambio de raíz lo muestran en la 3.ª persona: pidió, durmieron.'],
-    ['impf', 'Pretérito imperfecto', '-ar: -aba, -abas, -aba, -ábamos, -abais, -aban. -er/-ir: -ía, -ías, -ía, -íamos, -íais, -ían. Solo hay tres irregulares: ser, ir y ver.'],
-    ['fut', 'Futuro simple', 'Infinitivo completo + -é, -ás, -á, -emos, -éis, -án. Raíces irregulares: tendr-, vendr-, pondr-, saldr-, valdr-, podr-, sabr-, cabr-, habr-, querr-, har-, dir-.'],
-    ['cond', 'Condicional simple', 'La misma raíz que el futuro + las terminaciones del imperfecto de -er/-ir: -ía, -ías, -ía, -íamos, -íais, -ían.'],
-    ['perf', 'Pretérito perfecto compuesto', 'Presente de haber (he, has, ha…) + participio.'],
-    ['plusc', 'Pluscuamperfecto', 'Imperfecto de haber (había, habías…) + participio.'],
-    ['pretAnt', 'Pretérito anterior', 'Indefinido de haber (hube, hubiste…) + participio. Hoy es casi exclusivamente literario.'],
-    ['futPerf', 'Futuro compuesto', 'Futuro de haber (habré, habrás…) + participio.'],
-    ['condPerf', 'Condicional compuesto', 'Condicional de haber (habría, habrías…) + participio.']
+    ['presInd', 'Presente',
+      'Raíz + -o, -as/-es, -a/-e, -amos/-emos/-imos, -áis/-éis/-ís, -an/-en. Los cambios de raíz (e→ie, o→ue, e→i) aparecen en todas las personas menos nosotros y vosotros.',
+      'Stem + -o, -as/-es, -a/-e, -amos/-emos/-imos, -áis/-éis/-ís, -an/-en. Stem changes (e→ie, o→ue, e→i) appear in every person except nosotros and vosotros.'],
+    ['pret', 'Pretérito indefinido',
+      '-ar: -é, -aste, -ó, -amos, -asteis, -aron. -er/-ir: -í, -iste, -ió, -imos, -isteis, -ieron. Los pretéritos fuertes (tuv-, pud-, hic-, dij-…) no llevan tilde: tuve, tuvo. Los verbos en -ir con cambio de raíz lo muestran en la 3.ª persona: pidió, durmieron.',
+      '-ar: -é, -aste, -ó, -amos, -asteis, -aron. -er/-ir: -í, -iste, -ió, -imos, -isteis, -ieron. Strong preterites (tuv-, pud-, hic-, dij-…) take no written accent: tuve, tuvo. Stem-changing -ir verbs show the change in the third person: pidió, durmieron.'],
+    ['impf', 'Pretérito imperfecto',
+      '-ar: -aba, -abas, -aba, -ábamos, -abais, -aban. -er/-ir: -ía, -ías, -ía, -íamos, -íais, -ían. Solo hay tres irregulares: ser, ir y ver.',
+      '-ar: -aba, -abas, -aba, -ábamos, -abais, -aban. -er/-ir: -ía, -ías, -ía, -íamos, -íais, -ían. Only three verbs are irregular: ser, ir and ver.'],
+    ['fut', 'Futuro simple',
+      'Infinitivo completo + -é, -ás, -á, -emos, -éis, -án. Raíces irregulares: tendr-, vendr-, pondr-, saldr-, valdr-, podr-, sabr-, cabr-, habr-, querr-, har-, dir-.',
+      'The whole infinitive + -é, -ás, -á, -emos, -éis, -án. Irregular stems: tendr-, vendr-, pondr-, saldr-, valdr-, podr-, sabr-, cabr-, habr-, querr-, har-, dir-.'],
+    ['cond', 'Condicional simple',
+      'La misma raíz que el futuro + las terminaciones del imperfecto de -er/-ir: -ía, -ías, -ía, -íamos, -íais, -ían.',
+      'The same stem as the future + the -er/-ir imperfect endings: -ía, -ías, -ía, -íamos, -íais, -ían.'],
+    ['perf', 'Pretérito perfecto compuesto', 'Presente de haber (he, has, ha…) + participio.', 'Present of haber (he, has, ha…) + past participle.'],
+    ['plusc', 'Pluscuamperfecto', 'Imperfecto de haber (había, habías…) + participio.', 'Imperfect of haber (había, habías…) + past participle.'],
+    ['pretAnt', 'Pretérito anterior', 'Indefinido de haber (hube, hubiste…) + participio. Hoy es casi exclusivamente literario.', 'Preterite of haber (hube, hubiste…) + past participle. Today it is almost exclusively literary.'],
+    ['futPerf', 'Futuro compuesto', 'Futuro de haber (habré, habrás…) + participio.', 'Future of haber (habré, habrás…) + past participle.'],
+    ['condPerf', 'Condicional compuesto', 'Condicional de haber (habría, habrías…) + participio.', 'Conditional of haber (habría, habrías…) + past participle.']
   ] },
   { title: 'Subjuntivo', tenses: [
-    ['presSubj', 'Presente', 'Se parte de la 1.ª persona del presente de indicativo (tengo → teng-, conozco → conozc-) y se cambia la vocal: -ar toma -e; -er/-ir toman -a. Seis irregulares no siguen esta regla: ser, ir, estar, dar, haber y saber.'],
-    ['impfSubj', 'Pretérito imperfecto', '3.ª persona plural del indefinido sin -ron (tuvieron → tuvie-) + -ra o -se. Las dos formas son equivalentes. Nosotros lleva tilde: tuviéramos, tuviésemos.'],
-    ['perfSubj', 'Pretérito perfecto', 'Presente de subjuntivo de haber (haya, hayas…) + participio.'],
-    ['pluscSubj', 'Pluscuamperfecto', 'Imperfecto de subjuntivo de haber (hubiera/hubiese…) + participio.'],
-    ['futSubj', 'Futuro simple', 'Misma raíz que el imperfecto + -re, -res, -re, -remos, -reis, -ren. Hoy aparece sobre todo en textos jurídicos y en refranes («Adonde fueres, haz lo que vieres»).'],
-    ['futPerfSubj', 'Futuro compuesto', 'Futuro de subjuntivo de haber (hubiere…) + participio. Uso jurídico y literario.']
+    ['presSubj', 'Presente',
+      'Se parte de la 1.ª persona del presente de indicativo (tengo → teng-, conozco → conozc-) y se cambia la vocal: -ar toma -e; -er/-ir toman -a. Seis irregulares no siguen esta regla: ser, ir, estar, dar, haber y saber.',
+      'Start from the yo form of the present indicative (tengo → teng-, conozco → conozc-) and switch the vowel: -ar verbs take -e; -er/-ir verbs take -a. Six verbs break this rule: ser, ir, estar, dar, haber and saber.'],
+    ['impfSubj', 'Pretérito imperfecto',
+      '3.ª persona plural del indefinido sin -ron (tuvieron → tuvie-) + -ra o -se. Las dos formas son equivalentes. Nosotros lleva tilde: tuviéramos, tuviésemos.',
+      'Third-person plural preterite minus -ron (tuvieron → tuvie-) + -ra or -se. The two sets are interchangeable. The nosotros form takes a written accent: tuviéramos, tuviésemos.'],
+    ['perfSubj', 'Pretérito perfecto', 'Presente de subjuntivo de haber (haya, hayas…) + participio.', 'Present subjunctive of haber (haya, hayas…) + past participle.'],
+    ['pluscSubj', 'Pluscuamperfecto', 'Imperfecto de subjuntivo de haber (hubiera/hubiese…) + participio.', 'Imperfect subjunctive of haber (hubiera/hubiese…) + past participle.'],
+    ['futSubj', 'Futuro simple',
+      'Misma raíz que el imperfecto + -re, -res, -re, -remos, -reis, -ren. Hoy aparece sobre todo en textos jurídicos y en refranes («Adonde fueres, haz lo que vieres»).',
+      'Same stem as the imperfect subjunctive + -re, -res, -re, -remos, -reis, -ren. Today it appears mainly in legal texts and proverbs («Adonde fueres, haz lo que vieres»).'],
+    ['futPerfSubj', 'Futuro compuesto', 'Futuro de subjuntivo de haber (hubiere…) + participio. Uso jurídico y literario.', 'Future subjunctive of haber (hubiere…) + past participle. Legal and literary use.']
   ] },
   { title: 'Imperativo', tenses: [
-    ['imp', 'Afirmativo', 'Tú: 3.ª persona del presente (habla, come), salvo di, haz, ve, pon, sal, sé, ten, ven. Vosotros: infinitivo sin -r + -d (hablad, id). Usted, nosotros y ustedes: presente de subjuntivo.'],
-    ['impNeg', 'Negativo', 'No + presente de subjuntivo en todas las personas: no hables, no habléis.']
+    ['imp', 'Afirmativo',
+      'Tú: 3.ª persona del presente (habla, come), salvo di, haz, ve, pon, sal, sé, ten, ven. Vosotros: infinitivo sin -r + -d (hablad, id). Usted, nosotros y ustedes: presente de subjuntivo.',
+      'Tú: third-person singular present (habla, come), except di, haz, ve, pon, sal, sé, ten, ven. Vosotros: infinitive minus -r + -d (hablad, id). Usted, nosotros and ustedes: present subjunctive.'],
+    ['impNeg', 'Negativo', 'No + presente de subjuntivo en todas las personas: no hables, no habléis.', 'No + present subjunctive in every person: no hables, no habléis.']
   ] }
 ];
+const VOS_NOTES = {
+  presInd: ['Vos: infinitivo sin -r + -s, con tilde (hablás, comés, vivís). No hay cambio de raíz (podés, pedís) y ser da sos.',
+    'Vos: infinitive minus -r + -s, with an accent (hablás, comés, vivís). There is no stem change (podés, pedís), and ser gives sos.'],
+  imp: ['Vos: infinitivo sin -r, con tilde (hablá, comé, viví, decí, poné). Ir usa andá.',
+    'Vos: infinitive minus -r, with an accent (hablá, comé, viví, decí, poné). Ir uses andá.'],
+  presSubj: ['Vos: la norma culta usa la forma de tú (que vengas); la forma aguda (vengás) es frecuente en el habla.',
+    'Vos: educated usage takes the tú form (que vengas); the stressed form (vengás) is common in speech.'],
+  impNeg: ['Vos: la norma culta usa la forma de tú (no vengas); no vengás es frecuente en el habla.',
+    'Vos: educated usage takes the tú form (no vengas); no vengás is common in speech.']
+};
 
+/* ===== Oraciones de práctica ===== */
 const SENTENCES = [
-  { c: 'presente', s: 'Quiero que tú ___ (venir) a la fiesta.', v: 'venir', p: 1, t: 'presSubj', w: 'Principal en presente y acción simultánea o posterior: presente de subjuntivo.' },
-  { c: 'pasado', s: 'Quería que tú ___ (venir) a la fiesta.', v: 'venir', p: 1, t: 'impfSubj', w: 'Principal en imperfecto (mundo pasado): imperfecto de subjuntivo.' },
-  { c: 'presente', s: 'Te pediré que me ___ (decir) la verdad.', v: 'decir', p: 1, t: 'presSubj', w: 'El futuro pertenece al mundo presente: presente de subjuntivo.' },
-  { c: 'pasado', s: 'Me gustaría que ustedes ___ (traer) algo de postre.', v: 'traer', p: 5, t: 'impfSubj', w: 'El condicional arrastra el imperfecto de subjuntivo, aunque hable del futuro.' },
-  { c: 'presente', s: 'Dudo que ellos ya ___ (llegar).', v: 'llegar', p: 5, t: 'perfSubj', w: 'Principal en presente y acción anterior: pretérito perfecto de subjuntivo.' },
-  { c: 'pasado', s: 'Dudaba que ellos ya ___ (llegar).', v: 'llegar', p: 5, t: 'pluscSubj', w: 'Principal en pasado y acción anterior a ese pasado: pluscuamperfecto de subjuntivo.' },
-  { c: 'presente', s: 'Es necesario que nosotros ___ (empezar) temprano.', v: 'empezar', p: 3, t: 'presSubj', w: 'Expresión impersonal en presente: presente de subjuntivo. Ojo con z → c ante e.' },
-  { c: 'pasado', s: 'Era necesario que nosotros ___ (empezar) temprano.', v: 'empezar', p: 3, t: 'impfSubj', w: 'Expresión impersonal en imperfecto: imperfecto de subjuntivo.' },
-  { c: 'si', s: 'Si yo ___ (tener) más tiempo, aprendería a tocar el piano.', v: 'tener', p: 0, t: 'impfSubj', w: 'Condición improbable o contraria al presente: si + imperfecto de subjuntivo, condicional en la principal.' },
-  { c: 'si', s: 'Si yo ___ (saber) la respuesta, te la habría dicho.', v: 'saber', p: 0, t: 'pluscSubj', w: 'Condición contraria al pasado: si + pluscuamperfecto de subjuntivo.' },
-  { c: 'si', s: 'Si tú ___ (estudiar), aprobarás el examen.', v: 'estudiar', p: 1, t: 'presInd', w: 'Condición real o probable: si + presente de indicativo. Nunca si + presente de subjuntivo.' },
-  { c: 'si', s: 'Si me hubieras llamado, yo ___ (ir) a buscarte.', v: 'ir', p: 0, t: 'condPerf', alt: ['pluscSubj'], w: 'Consecuencia en el pasado: condicional compuesto (también se admite el pluscuamperfecto de subjuntivo: hubiera ido).' },
-  { c: 'si', s: 'Si me tocara la lotería, yo ___ (viajar) por todo el mundo.', v: 'viajar', p: 0, t: 'cond', w: 'Si + imperfecto de subjuntivo pide condicional simple en la principal.' },
-  { c: 'como si', s: 'Habla como si lo ___ (saber) todo.', v: 'saber', p: 2, t: 'impfSubj', w: 'Como si va siempre con imperfecto o pluscuamperfecto de subjuntivo, aunque la principal esté en presente.' },
-  { c: 'como si', s: 'Me miró como si nunca me ___ (ver) antes.', v: 'ver', p: 2, t: 'pluscSubj', w: 'Como si + acción anterior: pluscuamperfecto de subjuntivo.' },
-  { c: 'como si', s: 'Ojalá que mañana no ___ (llover).', v: 'llover', p: 2, t: 'presSubj', w: 'Ojalá + presente de subjuntivo: deseo posible para el futuro.' },
-  { c: 'como si', s: 'Ojalá tú ___ (estar) aquí ahora.', v: 'estar', p: 1, t: 'impfSubj', w: 'Ojalá + imperfecto de subjuntivo: deseo imposible o poco probable en el presente.' },
-  { c: 'como si', s: 'Ojalá yo no le ___ (decir) nada anoche.', v: 'decir', p: 0, t: 'pluscSubj', w: 'Ojalá + pluscuamperfecto de subjuntivo: lamento sobre algo que ya ocurrió.' },
-  { c: 'pasado', s: 'Buscaba un apartamento que ___ (tener) terraza.', v: 'tener', p: 2, t: 'impfSubj', w: 'Antecedente desconocido en una oración de relativo, con la principal en pasado: imperfecto de subjuntivo.' },
-  { c: 'presente', s: 'Busco a alguien que ___ (conocer) bien la ciudad.', v: 'conocer', p: 2, t: 'presSubj', w: 'Antecedente desconocido con la principal en presente: presente de subjuntivo.' },
-  { c: 'presente', s: 'Cuando yo ___ (llegar) a casa, te llamaré.', v: 'llegar', p: 0, t: 'presSubj', w: 'Cuando + acción futura: presente de subjuntivo (no futuro).' },
-  { c: 'pasado', s: 'Me dijo que me llamaría cuando ella ___ (llegar) a casa.', v: 'llegar', p: 2, t: 'impfSubj', w: 'Futuro visto desde el pasado (llamaría): cuando + imperfecto de subjuntivo.' },
-  { c: 'pasado', s: 'Les recomendé que ___ (pedir) la paella.', v: 'pedir', p: 5, t: 'impfSubj', w: 'Principal en indefinido: imperfecto de subjuntivo. Pedir cambia e → i en la raíz: pidieron → pidiera.' },
-  { c: 'presente', s: 'Dile que ___ (volver) pronto.', v: 'volver', p: 2, t: 'presSubj', w: 'El imperativo pertenece al mundo presente: presente de subjuntivo.' },
-  { c: 'presente', s: 'No creo que él ___ (mentir) ayer.', v: 'mentir', p: 2, t: 'impfSubj', alt: ['perfSubj'], w: 'Principal en presente, pero la acción subordinada es pasada: se admite imperfecto (mintiera) o perfecto de subjuntivo (haya mentido).' },
-  { c: 'pasado', s: 'Me alegré de que ustedes ___ (poder) venir.', v: 'poder', p: 5, t: 'impfSubj', w: 'Reacción emocional en indefinido: imperfecto de subjuntivo.' },
-  { c: 'presente', s: 'Me alegro de que ustedes ___ (poder) venir.', v: 'poder', p: 5, t: 'presSubj', alt: ['perfSubj'], w: 'Reacción emocional en presente: presente de subjuntivo (o perfecto, si la visita ya ocurrió).' },
-  { c: 'presente', s: 'Saldremos antes de que ___ (anochecer).', v: 'anochecer', p: 2, t: 'presSubj', w: 'Antes de que siempre exige subjuntivo; con la principal en futuro, presente de subjuntivo.' },
-  { c: 'pasado', s: 'Salimos antes de que ___ (anochecer).', v: 'anochecer', p: 2, t: 'impfSubj', w: 'Antes de que con la principal en indefinido: imperfecto de subjuntivo.' },
-  { c: 'pasado', s: 'Habría preferido que tú nos lo ___ (contar) antes.', v: 'contar', p: 1, t: 'pluscSubj', alt: ['impfSubj'], w: 'Condicional compuesto en la principal: pluscuamperfecto de subjuntivo (también se oye el imperfecto: contaras).' },
-  { c: 'indirecto', s: 'Marta: «Vendré mañana». Marta dijo que ___ (venir) al día siguiente.', v: 'venir', p: 2, t: 'cond', w: 'En el estilo indirecto con verbo introductor en pasado, el futuro pasa a condicional.' },
-  { c: 'indirecto', s: 'Juan: «Estoy cansado». Juan dijo que ___ (estar) cansado.', v: 'estar', p: 2, t: 'impf', w: 'El presente pasa a imperfecto de indicativo.' },
-  { c: 'indirecto', s: 'Ana: «Perdí las llaves». Ana contó que ___ (perder) las llaves.', v: 'perder', p: 2, t: 'plusc', w: 'El indefinido pasa a pluscuamperfecto. En el habla informal también se oye «perdió».' },
-  { c: 'indirecto', s: 'El profesor: «Entregad el trabajo». El profesor nos dijo que ___ (entregar) el trabajo.', v: 'entregar', p: 3, t: 'impfSubj', w: 'Una orden en estilo indirecto en pasado se convierte en imperfecto de subjuntivo.' },
-  { c: 'pasado', s: 'Era imposible que todos ___ (caber) en el coche.', v: 'caber', p: 5, t: 'impfSubj', w: 'Juicio de valor en imperfecto: imperfecto de subjuntivo. Caber tiene pretérito fuerte: cupieron.' },
-  { c: 'presente', s: 'Le aconsejaré que ___ (seguir) estudiando.', v: 'seguir', p: 2, t: 'presSubj', w: 'Futuro en la principal: presente de subjuntivo. Seguir: e → i y gu → g ante a.' },
-  { c: 'presente', s: 'Te lo explicaré para que lo ___ (entender).', v: 'entender', p: 1, t: 'presSubj', w: 'Para que siempre lleva subjuntivo; aquí, presente.' },
-  { c: 'pasado', s: 'Te lo expliqué para que lo ___ (entender).', v: 'entender', p: 1, t: 'impfSubj', w: 'Para que con la principal en indefinido: imperfecto de subjuntivo.' },
-  { c: 'presente', s: 'Espero que vosotros ya ___ (resolver) el problema.', v: 'resolver', p: 4, t: 'perfSubj', w: 'Principal en presente, acción ya terminada: perfecto de subjuntivo. Participio irregular: resuelto.' },
-  { c: 'pasado', s: 'El médico me recomendó que ___ (dormir) más.', v: 'dormir', p: 0, t: 'impfSubj', w: 'Recomendación en indefinido: imperfecto de subjuntivo. Dormir: durmieron → durmiera.' },
-  { c: 'pasado', s: 'Nos sorprendió que el museo ___ (estar) cerrado.', v: 'estar', p: 2, t: 'impfSubj', w: 'Reacción en indefinido: imperfecto de subjuntivo.' },
-  { c: 'pasado', s: 'Siempre nos pedían que ___ (hacer) silencio.', v: 'hacer', p: 3, t: 'impfSubj', w: 'Petición en imperfecto: imperfecto de subjuntivo. Nosotros lleva tilde: hiciéramos.' }
+  { c: 'presente', s: 'Quiero que tú ___ (venir) a la fiesta.', v: 'venir', p: 1, t: 'presSubj', w: 'Principal en presente y acción simultánea o posterior: presente de subjuntivo.', we: 'Main verb in the present and a simultaneous or later action: present subjunctive.' },
+  { c: 'pasado', s: 'Quería que tú ___ (venir) a la fiesta.', v: 'venir', p: 1, t: 'impfSubj', w: 'Principal en imperfecto (mundo pasado): imperfecto de subjuntivo.', we: 'Main verb in the imperfect (past world): imperfect subjunctive.' },
+  { c: 'presente', s: 'Te pediré que me ___ (decir) la verdad.', v: 'decir', p: 1, t: 'presSubj', w: 'El futuro pertenece al mundo presente: presente de subjuntivo.', we: 'The future belongs to the present world: present subjunctive.' },
+  { c: 'pasado', s: 'Me gustaría que ustedes ___ (traer) algo de postre.', v: 'traer', p: 5, t: 'impfSubj', w: 'El condicional arrastra el imperfecto de subjuntivo, aunque hable del futuro.', we: 'The conditional calls for the imperfect subjunctive, even when it refers to the future.' },
+  { c: 'presente', s: 'Dudo que ellos ya ___ (llegar).', v: 'llegar', p: 5, t: 'perfSubj', w: 'Principal en presente y acción anterior: pretérito perfecto de subjuntivo.', we: 'Main verb in the present and an earlier action: present perfect subjunctive.' },
+  { c: 'pasado', s: 'Dudaba que ellos ya ___ (llegar).', v: 'llegar', p: 5, t: 'pluscSubj', w: 'Principal en pasado y acción anterior a ese pasado: pluscuamperfecto de subjuntivo.', we: 'Main verb in the past and an action before that past: pluperfect subjunctive.' },
+  { c: 'presente', s: 'Es necesario que nosotros ___ (empezar) temprano.', v: 'empezar', p: 3, t: 'presSubj', w: 'Expresión impersonal en presente: presente de subjuntivo. Ojo con z → c ante e.', we: 'Impersonal expression in the present: present subjunctive. Watch the spelling change z → c before e.' },
+  { c: 'pasado', s: 'Era necesario que nosotros ___ (empezar) temprano.', v: 'empezar', p: 3, t: 'impfSubj', w: 'Expresión impersonal en imperfecto: imperfecto de subjuntivo.', we: 'Impersonal expression in the imperfect: imperfect subjunctive.' },
+  { c: 'si', s: 'Si yo ___ (tener) más tiempo, aprendería a tocar el piano.', v: 'tener', p: 0, t: 'impfSubj', w: 'Condición improbable o contraria al presente: si + imperfecto de subjuntivo, condicional en la principal.', we: 'Unlikely or contrary-to-present condition: si + imperfect subjunctive, with the conditional in the main clause.' },
+  { c: 'si', s: 'Si yo ___ (saber) la respuesta, te la habría dicho.', v: 'saber', p: 0, t: 'pluscSubj', w: 'Condición contraria al pasado: si + pluscuamperfecto de subjuntivo.', we: 'Contrary-to-past condition: si + pluperfect subjunctive.' },
+  { c: 'si', s: 'Si tú ___ (estudiar), aprobarás el examen.', v: 'estudiar', p: 1, t: 'presInd', w: 'Condición real o probable: si + presente de indicativo. Nunca si + presente de subjuntivo.', we: 'Real or likely condition: si + present indicative. Never si + present subjunctive.' },
+  { c: 'si', s: 'Si me hubieras llamado, yo ___ (ir) a buscarte.', v: 'ir', p: 0, t: 'condPerf', alt: ['pluscSubj'], w: 'Consecuencia en el pasado: condicional compuesto (también se admite el pluscuamperfecto de subjuntivo: hubiera ido).', we: 'Result in the past: conditional perfect (the pluperfect subjunctive, hubiera ido, is also accepted).' },
+  { c: 'si', s: 'Si me tocara la lotería, yo ___ (viajar) por todo el mundo.', v: 'viajar', p: 0, t: 'cond', w: 'Si + imperfecto de subjuntivo pide condicional simple en la principal.', we: 'Si + imperfect subjunctive calls for the conditional in the main clause.' },
+  { c: 'como si', s: 'Habla como si lo ___ (saber) todo.', v: 'saber', p: 2, t: 'impfSubj', w: 'Como si va siempre con imperfecto o pluscuamperfecto de subjuntivo, aunque la principal esté en presente.', we: 'Como si always takes the imperfect or pluperfect subjunctive, even when the main verb is in the present.' },
+  { c: 'como si', s: 'Me miró como si nunca me ___ (ver) antes.', v: 'ver', p: 2, t: 'pluscSubj', w: 'Como si + acción anterior: pluscuamperfecto de subjuntivo.', we: 'Como si + an earlier action: pluperfect subjunctive.' },
+  { c: 'como si', s: 'Ojalá que mañana no ___ (llover).', v: 'llover', p: 2, t: 'presSubj', w: 'Ojalá + presente de subjuntivo: deseo posible para el futuro.', we: 'Ojalá + present subjunctive: a possible wish about the future.' },
+  { c: 'como si', s: 'Ojalá tú ___ (estar) aquí ahora.', v: 'estar', p: 1, t: 'impfSubj', w: 'Ojalá + imperfecto de subjuntivo: deseo imposible o poco probable en el presente.', we: 'Ojalá + imperfect subjunctive: an impossible or unlikely wish about the present.' },
+  { c: 'como si', s: 'Ojalá yo no le ___ (decir) nada anoche.', v: 'decir', p: 0, t: 'pluscSubj', w: 'Ojalá + pluscuamperfecto de subjuntivo: lamento sobre algo que ya ocurrió.', we: 'Ojalá + pluperfect subjunctive: regret about something that already happened.' },
+  { c: 'pasado', s: 'Buscaba un apartamento que ___ (tener) terraza.', v: 'tener', p: 2, t: 'impfSubj', w: 'Antecedente desconocido en una oración de relativo, con la principal en pasado: imperfecto de subjuntivo.', we: 'Unknown antecedent in a relative clause, with the main verb in the past: imperfect subjunctive.' },
+  { c: 'presente', s: 'Busco a alguien que ___ (conocer) bien la ciudad.', v: 'conocer', p: 2, t: 'presSubj', w: 'Antecedente desconocido con la principal en presente: presente de subjuntivo.', we: 'Unknown antecedent with the main verb in the present: present subjunctive.' },
+  { c: 'presente', s: 'Cuando yo ___ (llegar) a casa, te llamaré.', v: 'llegar', p: 0, t: 'presSubj', w: 'Cuando + acción futura: presente de subjuntivo (no futuro).', we: 'Cuando + a future action: present subjunctive (not the future).' },
+  { c: 'pasado', s: 'Me dijo que me llamaría cuando ella ___ (llegar) a casa.', v: 'llegar', p: 2, t: 'impfSubj', w: 'Futuro visto desde el pasado (llamaría): cuando + imperfecto de subjuntivo.', we: 'A future seen from the past (llamaría): cuando + imperfect subjunctive.' },
+  { c: 'pasado', s: 'Les recomendé que ___ (pedir) la paella.', v: 'pedir', p: 5, t: 'impfSubj', w: 'Principal en indefinido: imperfecto de subjuntivo. Pedir cambia e → i en la raíz: pidieron → pidiera.', we: 'Main verb in the preterite: imperfect subjunctive. Pedir changes e → i in the stem: pidieron → pidiera.' },
+  { c: 'presente', s: 'Dile que ___ (volver) pronto.', v: 'volver', p: 2, t: 'presSubj', w: 'El imperativo pertenece al mundo presente: presente de subjuntivo.', we: 'A command belongs to the present world: present subjunctive.' },
+  { c: 'presente', s: 'No creo que él ___ (mentir) ayer.', v: 'mentir', p: 2, t: 'impfSubj', alt: ['perfSubj'], w: 'Principal en presente, pero la acción subordinada es pasada: se admite imperfecto (mintiera) o perfecto de subjuntivo (haya mentido).', we: 'The main verb is in the present, but the subordinate action is past: both the imperfect subjunctive (mintiera) and the present perfect subjunctive (haya mentido) work.' },
+  { c: 'pasado', s: 'Me alegré de que ustedes ___ (poder) venir.', v: 'poder', p: 5, t: 'impfSubj', w: 'Reacción emocional en indefinido: imperfecto de subjuntivo.', we: 'Emotional reaction in the preterite: imperfect subjunctive.' },
+  { c: 'presente', s: 'Me alegro de que ustedes ___ (poder) venir.', v: 'poder', p: 5, t: 'presSubj', alt: ['perfSubj'], w: 'Reacción emocional en presente: presente de subjuntivo (o perfecto, si la visita ya ocurrió).', we: 'Emotional reaction in the present: present subjunctive (or present perfect subjunctive if the visit already happened).' },
+  { c: 'presente', s: 'Saldremos antes de que ___ (anochecer).', v: 'anochecer', p: 2, t: 'presSubj', w: 'Antes de que siempre exige subjuntivo; con la principal en futuro, presente de subjuntivo.', we: 'Antes de que always requires the subjunctive; with a future main verb, the present subjunctive.' },
+  { c: 'pasado', s: 'Salimos antes de que ___ (anochecer).', v: 'anochecer', p: 2, t: 'impfSubj', w: 'Antes de que con la principal en indefinido: imperfecto de subjuntivo.', we: 'Antes de que with a preterite main verb: imperfect subjunctive.' },
+  { c: 'pasado', s: 'Habría preferido que tú nos lo ___ (contar) antes.', v: 'contar', p: 1, t: 'pluscSubj', alt: ['impfSubj'], w: 'Condicional compuesto en la principal: pluscuamperfecto de subjuntivo (también se oye el imperfecto: contaras).', we: 'Conditional perfect in the main clause: pluperfect subjunctive (the imperfect, contaras, is also heard).' },
+  { c: 'indirecto', s: 'Marta: «Vendré mañana». Marta dijo que ___ (venir) al día siguiente.', v: 'venir', p: 2, t: 'cond', w: 'En el estilo indirecto con verbo introductor en pasado, el futuro pasa a condicional.', we: 'In reported speech introduced by a past-tense verb, the future becomes the conditional.' },
+  { c: 'indirecto', s: 'Juan: «Estoy cansado». Juan dijo que ___ (estar) cansado.', v: 'estar', p: 2, t: 'impf', w: 'El presente pasa a imperfecto de indicativo.', we: 'The present becomes the imperfect indicative.' },
+  { c: 'indirecto', s: 'Ana: «Perdí las llaves». Ana contó que ___ (perder) las llaves.', v: 'perder', p: 2, t: 'plusc', w: 'El indefinido pasa a pluscuamperfecto. En el habla informal también se oye «perdió».', we: 'The preterite becomes the pluperfect. In informal speech «perdió» is also heard.' },
+  { c: 'indirecto', s: 'El profesor: «Entregad el trabajo». El profesor nos dijo que ___ (entregar) el trabajo.', v: 'entregar', p: 3, t: 'impfSubj', w: 'Una orden en estilo indirecto en pasado se convierte en imperfecto de subjuntivo.', we: 'A command reported in the past becomes the imperfect subjunctive.' },
+  { c: 'pasado', s: 'Era imposible que todos ___ (caber) en el coche.', v: 'caber', p: 5, t: 'impfSubj', w: 'Juicio de valor en imperfecto: imperfecto de subjuntivo. Caber tiene pretérito fuerte: cupieron.', we: 'Value judgment in the imperfect: imperfect subjunctive. Caber has a strong preterite: cupieron.' },
+  { c: 'presente', s: 'Le aconsejaré que ___ (seguir) estudiando.', v: 'seguir', p: 2, t: 'presSubj', w: 'Futuro en la principal: presente de subjuntivo. Seguir: e → i y gu → g ante a.', we: 'Future in the main clause: present subjunctive. Seguir changes e → i, and gu → g before a.' },
+  { c: 'presente', s: 'Te lo explicaré para que lo ___ (entender).', v: 'entender', p: 1, t: 'presSubj', w: 'Para que siempre lleva subjuntivo; aquí, presente.', we: 'Para que always takes the subjunctive; here, the present.' },
+  { c: 'pasado', s: 'Te lo expliqué para que lo ___ (entender).', v: 'entender', p: 1, t: 'impfSubj', w: 'Para que con la principal en indefinido: imperfecto de subjuntivo.', we: 'Para que with a preterite main verb: imperfect subjunctive.' },
+  { c: 'presente', s: 'Espero que vosotros ya ___ (resolver) el problema.', v: 'resolver', p: 4, t: 'perfSubj', w: 'Principal en presente, acción ya terminada: perfecto de subjuntivo. Participio irregular: resuelto.', we: 'Main verb in the present, action already finished: present perfect subjunctive. Irregular participle: resuelto.' },
+  { c: 'pasado', s: 'El médico me recomendó que ___ (dormir) más.', v: 'dormir', p: 0, t: 'impfSubj', w: 'Recomendación en indefinido: imperfecto de subjuntivo. Dormir: durmieron → durmiera.', we: 'Recommendation in the preterite: imperfect subjunctive. Dormir: durmieron → durmiera.' },
+  { c: 'pasado', s: 'Nos sorprendió que el museo ___ (estar) cerrado.', v: 'estar', p: 2, t: 'impfSubj', w: 'Reacción en indefinido: imperfecto de subjuntivo.', we: 'Reaction in the preterite: imperfect subjunctive.' },
+  { c: 'pasado', s: 'Siempre nos pedían que ___ (hacer) silencio.', v: 'hacer', p: 3, t: 'impfSubj', w: 'Petición en imperfecto: imperfecto de subjuntivo. Nosotros lleva tilde: hiciéramos.', we: 'Request in the imperfect: imperfect subjunctive. The nosotros form takes an accent: hiciéramos.' },
+  // Voseo (solo aparecen si «vos» está activado)
+  { c: 'si', s: 'Si vos ___ (querer), te acompaño al centro.', v: 'querer', p: 'vos', t: 'presInd', w: 'Si + presente de indicativo. Con vos, el presente no cambia la raíz: querés.', we: 'Si + present indicative. With vos, the present has no stem change: querés.' },
+  { c: 'presente', s: 'Quiero que vos ___ (venir) mañana.', v: 'venir', p: 'vos', t: 'presSubj', w: 'Presente en la principal: presente de subjuntivo. Con vos, la norma culta usa la forma de tú (vengas); vengás también es frecuente.', we: 'Present main verb: present subjunctive. With vos, educated usage takes the tú form (vengas); vengás is also common.' },
+  { c: 'pasado', s: 'Me pidió que vos ___ (traer) el vino.', v: 'traer', p: 'vos', t: 'impfSubj', w: 'Principal en indefinido: imperfecto de subjuntivo. Con vos se usa la misma forma que con tú.', we: 'Preterite main verb: imperfect subjunctive. Vos uses the same form as tú.' },
+  { c: 'indirecto', s: 'Lucía: «Vos ___ (ser) mi mejor amigo».', v: 'ser', p: 'vos', t: 'presInd', w: 'Presente de indicativo de ser con vos: sos.', we: 'Present indicative of ser with vos: sos.' }
 ];
 
-const CATS = { todas: 'Todas', presente: 'Mundo presente', pasado: 'Mundo pasado', si: 'Oraciones con si', 'como si': 'Como si y ojalá', indirecto: 'Estilo indirecto' };
+const CATS = {
+  todas: ['Todas', 'All'], presente: ['Mundo presente', 'Present world'], pasado: ['Mundo pasado', 'Past world'],
+  si: ['Oraciones con si', 'Si clauses'], 'como si': ['Como si y ojalá', 'Como si and ojalá'], indirecto: ['Estilo indirecto', 'Reported speech']
+};
 
 /* ===== Utilidades ===== */
 const $ = s => document.querySelector(s);
@@ -699,10 +877,10 @@ const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.f
 const pick = a => a[Math.floor(Math.random() * a.length)];
 
 function formsFor(r, t, p) {
+  if (p === 'vos') return vosForms(r, t);
   if (t === 'impfSubj') return [r.impfSubjRa[p], r.impfSubjSe[p]];
   if (t === 'pluscSubj') return [r.pluscSubjRa[p], r.pluscSubjSe[p]];
-  if (t === 'futSubj' || t === 'futPerfSubj' || t === 'imp' || t === 'impNeg' || r[t]) return [r[t][p]];
-  return [];
+  return r[t] ? [r[t][p]] : [];
 }
 const norm = s => s.toLowerCase().trim().replace(/\s+/g, ' ');
 function grade(input, answers) {
@@ -712,6 +890,10 @@ function grade(input, answers) {
   if (answers.some(x => STRIP(norm(x)) === STRIP(a))) return 'accent';
   return 'wrong';
 }
+const errText = () => L('Escribe un infinitivo terminado en -ar, -er o -ir (por ejemplo: cantar, volver, pedir).', 'Type an infinitive ending in -ar, -er or -ir (for example: cantar, volver, pedir).');
+const noteText = n => n.k === 'refl'
+  ? L('Se muestra sin el pronombre reflexivo (me, te, se, nos, os, se).', 'Shown without the reflexive pronoun (me, te, se, nos, os, se).')
+  : L(`Se conjuga como ${n.base}.`, `Conjugated like ${n.base}.`);
 
 /* ===== Pestañas ===== */
 const VIEWS = ['concordancia', 'conjugador', 'practica'];
@@ -720,11 +902,20 @@ function showView() {
   const v = VIEWS.includes(h) ? h : 'concordancia';
   VIEWS.forEach(id => {
     document.getElementById(id).hidden = id !== v;
-    const tab = document.querySelector(`[data-tab="${id}"]`);
-    tab.setAttribute('aria-current', id === v ? 'page' : 'false');
+    document.querySelector(`[data-tab="${id}"]`).setAttribute('aria-current', id === v ? 'page' : 'false');
   });
 }
 window.addEventListener('hashchange', showView);
+
+/* ===== Textos estáticos bilingües ===== */
+function applyLang() {
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if (el.dataset.es === undefined) el.dataset.es = el.innerHTML;
+    el.innerHTML = PREF.en ? el.dataset.en : el.dataset.es;
+  });
+  document.querySelectorAll('[data-lang]').forEach(el => { el.hidden = el.dataset.lang !== (PREF.en ? 'en' : 'es'); });
+  document.querySelectorAll('[data-vos-only]').forEach(el => { el.hidden = !PREF.vos; });
+}
 
 /* ===== Constructor de oraciones ===== */
 const LANES = {
@@ -736,15 +927,21 @@ const B = { main: 'presInd', timing: 'sim', p: 1, verb: 'venir' };
 function buildLanes() {
   const q = conjugate('querer');
   for (const lane of ['pres', 'past']) {
-    const box = document.querySelector(`#lane-${lane} .chips`);
-    box.innerHTML = LANES[lane].map(([k, n]) =>
+    document.querySelector(`#lane-${lane} .chips`).innerHTML = LANES[lane].map(([k, n]) =>
       `<button type="button" class="chip" data-main="${k}"><span class="chip-form">${q[k][2]}</span><span class="chip-name">${n}</span></button>`).join('');
   }
   document.querySelectorAll('[data-main]').forEach(b => b.addEventListener('click', () => { B.main = b.dataset.main; renderBuilder(); }));
-  $('#b-persons').innerHTML = PRON_SHORT.map((n, i) => `<button type="button" class="seg" data-p="${i}">${n}</button>`).join('');
-  document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => { B.p = +b.dataset.p; renderBuilder(); }));
   document.querySelectorAll('[data-timing]').forEach(b => b.addEventListener('click', () => { B.timing = b.dataset.timing; renderBuilder(); }));
   $('#b-verb').addEventListener('input', e => { B.verb = e.target.value; renderBuilder(); });
+  buildPersonChips();
+}
+function buildPersonChips() {
+  const ps = activePersons();
+  if (!ps.some(x => x.p === B.p)) B.p = 1;
+  $('#b-persons').innerHTML = ps.map(x => `<button type="button" class="seg" data-p="${x.p}">${x.short}</button>`).join('');
+  document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => {
+    B.p = b.dataset.p === 'vos' ? 'vos' : +b.dataset.p; renderBuilder();
+  }));
 }
 
 function renderBuilder() {
@@ -754,7 +951,7 @@ function renderBuilder() {
   const target = lane === 'pres' ? (ant ? 'perfSubj' : 'presSubj') : (ant ? 'pluscSubj' : 'impfSubj');
   const r = conjugate(B.verb || '');
   document.querySelectorAll('[data-main]').forEach(b => b.setAttribute('aria-pressed', b.dataset.main === B.main));
-  document.querySelectorAll('[data-p]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.p === B.p));
+  document.querySelectorAll('[data-p]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p) === String(B.p)));
   document.querySelectorAll('[data-timing]').forEach(b => b.setAttribute('aria-pressed', b.dataset.timing === B.timing));
   $('#builder').classList.toggle('past', lane === 'past');
   $('#lane-pres').classList.toggle('active', lane === 'pres');
@@ -762,55 +959,70 @@ function renderBuilder() {
   $('#lane-pres .res-name').textContent = TN[ant ? 'perfSubj' : 'presSubj'];
   $('#lane-past .res-name').textContent = TN[ant ? 'pluscSubj' : 'impfSubj'];
   const out = $('#b-sentence'), rule = $('#b-rule');
+  const pron = shortOf(B.p);
   if (r.error) {
-    out.innerHTML = `Mi profesora <span class="mv">${q[B.main][2]}</span> que ${PRON_SHORT[B.p]} <mark>…</mark>`;
-    rule.textContent = r.error;
+    out.innerHTML = `Mi profesora <span class="mv">${q[B.main][2]}</span> que ${pron} <mark>…</mark>`;
+    rule.textContent = errText();
     document.querySelectorAll('.res-form').forEach(e => e.textContent = '');
     return;
   }
   const f = formsFor(r, target, B.p);
-  out.innerHTML = `Mi profesora <span class="mv">${esc(q[B.main][2])}</span> que ${PRON_SHORT[B.p]}${ant ? ' ya' : ''} <mark>${esc(f[0])}</mark>.`;
+  out.innerHTML = `Mi profesora <span class="mv">${esc(q[B.main][2])}</span> que ${pron}${ant ? ' ya' : ''} <mark>${esc(f[0])}</mark>.`;
   $(`#lane-${lane} .res-form`).textContent = f.join(' / ');
   $(`#lane-${lane === 'pres' ? 'past' : 'pres'} .res-form`).textContent = '';
-  const mainName = TN[B.main];
-  let txt = `Verbo principal en ${mainName} (mundo ${lane === 'pres' ? 'presente' : 'pasado'}) y acción ${ant ? 'anterior' : 'simultánea o posterior'}: ${TN[target]}.`;
-  if (f.length > 1) txt += ` La forma en -se (${f[1]}) es equivalente.`;
-  if (B.main === 'perf' && !ant) txt += ` Con el pretérito perfecto también se oye el imperfecto: ${r.impfSubjRa[B.p]}.`;
-  if (r.notes.length) txt += ' ' + r.notes.join(' ');
+  const isSe = target === 'impfSubj' || target === 'pluscSubj';
+  let txt;
+  if (PREF.en) {
+    txt = `Main verb in the ${TN_EN[B.main]} (${lane === 'pres' ? 'present' : 'past'} world) and ${ant ? 'an earlier' : 'a simultaneous or later'} action: ${TN_EN[target]} (${TN[target]}).`;
+    if (isSe && f[1]) txt += ` The -se form (${f[1]}) is interchangeable.`;
+    if (!isSe && f[1]) txt += ` The stressed vos form (${f[1]}) is also common in speech.`;
+    if (B.main === 'perf' && !ant) txt += ` After the present perfect, the imperfect subjunctive is also heard: ${formsFor(r, 'impfSubj', B.p)[0]}.`;
+  } else {
+    txt = `Verbo principal en ${TN[B.main]} (mundo ${lane === 'pres' ? 'presente' : 'pasado'}) y acción ${ant ? 'anterior' : 'simultánea o posterior'}: ${TN[target]}.`;
+    if (isSe && f[1]) txt += ` La forma en -se (${f[1]}) es equivalente.`;
+    if (!isSe && f[1]) txt += ` La forma aguda de vos (${f[1]}) también es frecuente en el habla.`;
+    if (B.main === 'perf' && !ant) txt += ` Con el pretérito perfecto también se oye el imperfecto: ${formsFor(r, 'impfSubj', B.p)[0]}.`;
+  }
+  if (r.notes.length) txt += ' ' + r.notes.map(noteText).join(' ');
   rule.textContent = txt;
 }
 
 /* ===== Conjugador ===== */
+let currentVerb = 'tener';
 function cellHTML(r, key, p) {
-  const regKey = key;
-  const mark = (f, rf) => `<span class="${f !== rf ? 'irr' : ''}">${esc(f)}</span>`;
-  if (key === 'impfSubj' || key === 'pluscSubj') {
-    const a = key + 'Ra', b = key + 'Se';
-    return `${mark(r[a][p], r.reg[a][p])}<span class="alt">${mark(r[b][p], r.reg[b][p])}</span>`;
-  }
-  return mark(r[regKey][p], r.reg[regKey][p]);
+  const f = formsFor(r, key, p), rf = formsFor(r.reg, key, p);
+  const mark = (a, b) => `<span class="${a !== b ? 'irr' : ''}">${esc(a)}</span>`;
+  let h = mark(f[0], rf[0]);
+  if (f[1]) h += `<span class="alt">${mark(f[1], rf[1])}</span>`;
+  return h;
 }
 
 function renderConj(v) {
+  currentVerb = v;
   const box = $('#conj-out');
   const r = conjugate(v);
-  if (r.error) { box.innerHTML = `<p class="msg">${esc(r.error)}</p>`; return; }
+  if (r.error) { box.innerHTML = `<p class="msg">${esc(errText())}</p>`; return; }
   let h = `<div class="conj-head"><h2 class="verb-title">${esc(r.inf)}</h2>`;
-  const np = [['Gerundio', 'ger'], ['Participio', 'part'], ['Infinitivo compuesto', 'infComp'], ['Gerundio compuesto', 'gerComp']];
+  const np = [[L('Gerundio', 'Gerund'), 'ger'], [L('Participio', 'Past participle'), 'part'], [L('Infinitivo compuesto', 'Perfect infinitive'), 'infComp'], [L('Gerundio compuesto', 'Perfect gerund'), 'gerComp']];
   h += `<dl class="np">` + np.map(([n, k]) => `<div><dt>${n}</dt><dd class="${r[k] !== r.reg[k] ? 'irr' : ''}">${esc(r[k])}</dd></div>`).join('') + `</dl></div>`;
-  const notes = [...r.notes];
-  if (!r.known) notes.push('Este verbo no está en la lista del programa: las formas se generan con las reglas regulares y ortográficas. Si tiene cambio de raíz, compruébalo en el diccionario de la RAE.');
-  h += `<p class="legend"><span class="irr">Subrayado</span>: la forma se aparta del modelo regular (cambio de raíz, cambio ortográfico o irregularidad).</p>`;
+  const notes = r.notes.map(noteText);
+  if (!r.known) notes.push(L('Este verbo no está en la lista del programa: las formas se generan con las reglas regulares y ortográficas. Si tiene cambio de raíz, compruébalo en el diccionario de la RAE.',
+    'This verb isn’t in the program’s list, so its forms are generated with the regular and spelling-change rules. If it has a stem change, check it in the RAE dictionary.'));
+  h += `<p class="legend">${L('<span class="irr">Subrayado</span>: la forma se aparta del modelo regular (cambio de raíz, cambio ortográfico o irregularidad).',
+    '<span class="irr">Underlined</span>: the form departs from the regular pattern (stem change, spelling change or irregularity).')}</p>`;
   if (notes.length) h += `<p class="msg">${notes.map(esc).join(' ')}</p>`;
+  const persons = activePersons();
   for (const sec of SECTIONS) {
     h += `<section class="mood"><h3>${sec.title}</h3><div class="tense-grid">`;
-    for (const [k, name, how] of sec.tenses) {
-      h += `<div class="tense"><h4>${name}</h4><table><tbody>`;
-      for (let p = 0; p < 6; p++) {
-        if ((k === 'imp' || k === 'impNeg') && p === 0) continue;
-        h += `<tr><th scope="row">${PRON[p]}</th><td>${cellHTML(r, k, p)}</td></tr>`;
+    for (const [k, name, how, howEn] of sec.tenses) {
+      h += `<div class="tense"><h4>${name}${PREF.en ? `<span class="h-en">${TN_EN[k] || ''}</span>` : ''}</h4><table><tbody>`;
+      for (const x of persons) {
+        if ((k === 'imp' || k === 'impNeg') && x.p === 0) continue;
+        h += `<tr${x.p === 'vos' ? ' class="vos-row"' : ''}><th scope="row">${x.label}</th><td>${cellHTML(r, k, x.p)}</td></tr>`;
       }
-      h += `</tbody></table><details><summary>Cómo se forma</summary><p>${how}</p></details></div>`;
+      let note = L(how, howEn);
+      if (PREF.vos && VOS_NOTES[k]) note += ' ' + L(...VOS_NOTES[k]);
+      h += `</tbody></table><details><summary>${L('Cómo se forma', 'How it’s formed')}</summary><p>${note}</p></details></div>`;
     }
     h += `</div></section>`;
   }
@@ -821,37 +1033,41 @@ function renderConj(v) {
 const S = { mode: 'conc', ok: 0, n: 0, streak: 0, checked: false, cur: null, queue: [] };
 
 function lenient() { return $('#opt-lenient').checked; }
-function updateScore() { $('#score').textContent = `${S.ok} de ${S.n} correctas, racha de ${S.streak}`; }
+function updateScore() { $('#score').textContent = L(`${S.ok} de ${S.n} correctas, racha de ${S.streak}`, `${S.ok} of ${S.n} correct, streak of ${S.streak}`); }
+
+function sentenceAllowed(x) {
+  return (x.p !== 4 || PREF.vosotros) && (x.p !== 'vos' || PREF.vos);
+}
 
 function nextConc() {
   const cat = $('#conc-cat').value;
-  if (!S.queue.length) S.queue = shuffle(SENTENCES.filter(x => cat === 'todas' || x.c === cat).slice());
+  if (!S.queue.length) S.queue = shuffle(SENTENCES.filter(x => (cat === 'todas' || x.c === cat) && sentenceAllowed(x)));
   const it = S.queue.pop();
   const r = conjugate(it.v);
-  let answers = formsFor(r, it.t, it.p);
+  const answers = formsFor(r, it.t, it.p);
   const extra = (it.alt || []).flatMap(t => formsFor(r, t, it.p));
-  S.cur = { answers, all: answers.concat(extra), why: it.w, extra };
+  S.cur = { answers, all: answers.concat(extra), it, extra };
   const [before, after] = it.s.split('___');
-  $('#conc-sentence').innerHTML = `${esc(before)}<input id="ans" class="blank" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Tu respuesta">${esc(after)}`;
+  $('#conc-sentence').innerHTML = `${esc(before)}<input id="ans" class="blank" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${L('Tu respuesta', 'Your answer')}">${esc(after)}`;
   resetCheck();
 }
 
 function nextDrill() {
   const tenses = [...document.querySelectorAll('[name="dt"]:checked')].map(x => x.value);
   const groups = [...document.querySelectorAll('[name="dg"]:checked')].map(x => x.value);
-  const box = $('#drill-card');
   if (!tenses.length || !groups.length) {
-    $('#drill-prompt').innerHTML = `<p class="msg">Marca al menos un tiempo y un grupo de verbos en los ajustes.</p>`;
+    $('#drill-prompt').innerHTML = `<p class="msg">${L('Marca al menos un tiempo y un grupo de verbos en los ajustes.', 'Select at least one tense and one verb group in the settings.')}</p>`;
     S.cur = null; return;
   }
   const verbs = groups.flatMap(g => VERB_LIST[g].split(' '));
   const v = pick(verbs), t = pick(tenses);
-  const p = (t === 'imp' || t === 'impNeg') ? 1 + Math.floor(Math.random() * 5) : Math.floor(Math.random() * 6);
+  const persons = activePersons().filter(x => !((t === 'imp' || t === 'impNeg') && x.p === 0));
+  const p = pick(persons).p;
   const r = conjugate(v);
   const answers = formsFor(r, t, p);
-  S.cur = { answers, all: answers, why: '', extra: [] };
-  $('#drill-prompt').innerHTML = `<p class="d-verb">${esc(v)}</p><p class="d-tense">${TN[t]}</p><p class="d-person">${PRON[p]}</p>
-    <input id="ans" class="drill-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Tu respuesta">`;
+  S.cur = { answers, all: answers, it: null, extra: [], vos: p === 'vos', t };
+  $('#drill-prompt').innerHTML = `<p class="d-verb">${esc(v)}</p><p class="d-tense">${TN[t]}${PREF.en ? ` <span class="d-en">(${TN_EN[t]})</span>` : ''}</p><p class="d-person">${labelOf(p)}</p>
+    <input id="ans" class="drill-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${L('Tu respuesta', 'Your answer')}">`;
   resetCheck();
 }
 
@@ -869,18 +1085,24 @@ function check() {
   if (!S.cur || S.checked) return;
   const a = $('#ans');
   const g = grade(a.value, S.cur.all);
-  if (g === 'empty') { $('#fb').innerHTML = '<p>Escribe una respuesta o pulsa «Siguiente» para saltar.</p>'; $('#btn-next').hidden = false; return; }
+  if (g === 'empty') {
+    $('#fb').innerHTML = `<p>${L('Escribe una respuesta o pulsa «Siguiente» para saltar.', 'Type an answer, or press «Siguiente» to skip.')}</p>`;
+    $('#btn-next').hidden = false; return;
+  }
   S.checked = true; S.n++;
   const correct = g === 'ok' || (g === 'accent' && lenient());
   if (correct) { S.ok++; S.streak++; } else S.streak = 0;
-  const main = S.cur.answers.join(' / ');
+  const isSe = S.cur.it ? (S.cur.it.t === 'impfSubj' || S.cur.it.t === 'pluscSubj') : (S.cur.t === 'impfSubj' || S.cur.t === 'pluscSubj');
+  const main = esc(S.cur.answers.join(' / '));
   let msg;
-  if (g === 'ok') msg = `<strong>Correcto.</strong> ${S.cur.answers.length > 1 ? 'Formas válidas: ' + esc(main) + '.' : ''}`;
-  else if (correct) msg = `<strong>Correcto, pero revisa las tildes:</strong> ${esc(main)}.`;
-  else if (g === 'accent') msg = `<strong>Casi: faltan o sobran tildes.</strong> La forma es ${esc(main)}.`;
-  else msg = `<strong>No es correcto.</strong> La forma es ${esc(main)}.`;
-  if (S.cur.extra.length) msg += ` También se acepta: ${esc(S.cur.extra.join(' / '))}.`;
-  if (S.cur.why) msg += `<br>${esc(S.cur.why)}`;
+  if (g === 'ok') msg = `<strong>${L('Correcto.', 'Correct.')}</strong> ${S.cur.answers.length > 1 ? L('Formas válidas: ', 'Valid forms: ') + main + '.' : ''}`;
+  else if (correct) msg = `<strong>${L('Correcto, pero revisa las tildes:', 'Correct, but check the accents:')}</strong> ${main}.`;
+  else if (g === 'accent') msg = `<strong>${L('Casi: faltan o sobran tildes.', 'Almost: the accents are off.')}</strong> ${L('La forma es', 'The form is')} ${main}.`;
+  else msg = `<strong>${L('No es correcto.', 'Not quite.')}</strong> ${L('La forma es', 'The form is')} ${main}.`;
+  if (S.cur.extra.length) msg += ` ${L('También se acepta:', 'Also accepted:')} ${esc(S.cur.extra.join(' / '))}.`;
+  if (S.cur.it) msg += `<br>${esc(PREF.en ? S.cur.it.we : S.cur.it.w)}`;
+  else if (S.cur.vos && S.cur.answers.length > 1 && !isSe) msg += `<br>${esc(L('Con vos, la norma culta usa la forma de tú; la forma aguda también es frecuente en el habla.', 'With vos, educated usage takes the tú form; the stressed form is also common in speech.'))}`;
+  else if (S.cur.vos && !['presInd', 'imp'].includes(S.cur.t)) msg += `<br>${esc(L('En este tiempo, vos usa la misma forma que tú.', 'In this tense, vos uses the same form as tú.'))}`;
   $('#fb').innerHTML = `<p>${msg}</p>`;
   $('#fb').className = 'fb ' + (correct ? 'good' : 'bad');
   a.classList.add(correct ? 'is-good' : 'is-bad');
@@ -903,23 +1125,45 @@ function setMode(m) {
   next();
 }
 
+function fillCats() {
+  const cur = $('#conc-cat').value || 'todas';
+  $('#conc-cat').innerHTML = Object.entries(CATS).map(([k, n]) => `<option value="${k}">${L(n[0], n[1])}</option>`).join('');
+  $('#conc-cat').value = cur;
+}
+function fillDrillTenses() {
+  const DT = [['presInd', 1], ['pret', 1], ['impf', 1], ['fut', 1], ['cond', 1], ['perf', 0], ['plusc', 0], ['futPerf', 0], ['condPerf', 0], ['presSubj', 1], ['impfSubj', 1], ['perfSubj', 0], ['pluscSubj', 0], ['imp', 0], ['impNeg', 0]];
+  const prev = new Set([...document.querySelectorAll('[name="dt"]:checked')].map(x => x.value));
+  const first = !document.querySelector('[name="dt"]');
+  $('#dt-box').innerHTML = DT.map(([k, on]) => `<label><input type="checkbox" name="dt" value="${k}" ${(first ? on : prev.has(k)) ? 'checked' : ''}> ${TN[k]}${PREF.en ? ` <span class="d-en">(${TN_EN[k]})</span>` : ''}</label>`).join('');
+  document.querySelectorAll('[name="dt"]').forEach(x => x.addEventListener('change', () => { if (S.mode === 'drill') nextDrill(); }));
+}
+
+/* ===== Aplicar preferencias ===== */
+function applyPrefs(refreshPractice) {
+  $('#pref-vosotros').checked = PREF.vosotros;
+  $('#pref-vos').checked = PREF.vos;
+  $('#pref-en').checked = PREF.en;
+  document.documentElement.lang = 'es';
+  applyLang();
+  buildPersonChips(); renderBuilder();
+  renderConj(currentVerb);
+  fillCats(); fillDrillTenses(); updateScore();
+  if (refreshPractice) { S.queue = []; next(); }
+}
+
 /* ===== Inicio ===== */
 document.addEventListener('DOMContentLoaded', () => {
   showView();
-  buildLanes(); renderBuilder();
+  buildLanes();
 
   $('#verbs').innerHTML = ALL_VERBS.slice().sort((a, b) => a.localeCompare(b, 'es')).map(v => `<option value="${v}">`).join('');
   $('#conj-form').addEventListener('submit', e => { e.preventDefault(); renderConj($('#conj-input').value); });
   document.querySelectorAll('[data-try]').forEach(b => b.addEventListener('click', () => { $('#conj-input').value = b.dataset.try; renderConj(b.dataset.try); }));
-  renderConj('tener');
 
-  $('#conc-cat').innerHTML = Object.entries(CATS).map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
   $('#conc-cat').addEventListener('change', () => { S.queue = []; nextConc(); });
-  const DT = [['presInd', 1], ['pret', 1], ['impf', 1], ['fut', 1], ['cond', 1], ['perf', 0], ['plusc', 0], ['futPerf', 0], ['condPerf', 0], ['presSubj', 1], ['impfSubj', 1], ['perfSubj', 0], ['pluscSubj', 0], ['imp', 0], ['impNeg', 0]];
-  $('#dt-box').innerHTML = DT.map(([k, on]) => `<label><input type="checkbox" name="dt" value="${k}" ${on ? 'checked' : ''}> ${TN[k]}</label>`).join('');
-  const DG = [['regular', 'Regulares'], ['ortografico', 'Con cambio ortográfico'], ['raiz', 'Con cambio de raíz'], ['irregular', 'Irregulares']];
-  $('#dg-box').innerHTML = DG.map(([k, n]) => `<label><input type="checkbox" name="dg" value="${k}" checked> ${n}</label>`).join('');
-  document.querySelectorAll('[name="dt"],[name="dg"]').forEach(x => x.addEventListener('change', () => { if (S.mode === 'drill') nextDrill(); }));
+  const DG = [['regular', 'Regulares', 'Regular'], ['ortografico', 'Con cambio ortográfico', 'Spelling change'], ['raiz', 'Con cambio de raíz', 'Stem change'], ['irregular', 'Irregulares', 'Irregular']];
+  $('#dg-box').innerHTML = DG.map(([k, n, en]) => `<label><input type="checkbox" name="dg" value="${k}" checked> <span data-en="${en}">${n}</span></label>`).join('');
+  document.querySelectorAll('[name="dg"]').forEach(x => x.addEventListener('change', () => { if (S.mode === 'drill') nextDrill(); }));
 
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
   $('#btn-check').addEventListener('click', check);
@@ -931,7 +1175,15 @@ document.addEventListener('DOMContentLoaded', () => {
     a.value = a.value.slice(0, s) + b.textContent + a.value.slice(e);
     a.focus(); a.setSelectionRange(s + 1, s + 1);
   }));
-  setMode('conc'); updateScore();
+
+  ['vosotros', 'vos', 'en'].forEach(k => $('#pref-' + k).addEventListener('change', e => {
+    PREF[k] = e.target.checked; savePrefs();
+    applyPrefs(k !== 'en'); // language change keeps the current question
+    if (k === 'en' && S.checked) { /* keep feedback as is */ }
+  }));
+
+  applyPrefs(false);
+  setMode('conc');
 });
 
 </script>
