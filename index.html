@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concordancia: tiempos y conjugación del español</title>
+<meta name="description" content="Practica la concordancia de tiempos y la conjugación completa de los verbos españoles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;0,800;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --paper: #F3F6F4; --surface: #FFFFFF; --ink: #1E2B3A; --muted: #56657A; --line: #D3DBDF;
+  --azul: #2D5B8A; --azul-tint: #E2EBF4; --azafran: #9A6E00; --azafran-ink: #B98510; --azafran-tint: #F7ECCD;
+  --oliva: #3F6A2C; --oliva-tint: #E4EEDC; --granate: #9B2C3B; --granate-tint: #F6E1E3;
+  --serif: 'Alegreya', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --sans: 'Alegreya Sans', 'Gill Sans', 'Segoe UI', system-ui, sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #121922; --surface: #1A2430; --ink: #E6EBEF; --muted: #9DABB9; --line: #2D3B4A;
+    --azul: #8DB6E0; --azul-tint: #1D3047; --azafran: #E9BB4E; --azafran-ink: #E9BB4E; --azafran-tint: #3A2F14;
+    --oliva: #9CC57C; --oliva-tint: #1F3118; --granate: #EE97A2; --granate-tint: #3C1D22;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #121922; --surface: #1A2430; --ink: #E6EBEF; --muted: #9DABB9; --line: #2D3B4A;
+  --azul: #8DB6E0; --azul-tint: #1D3047; --azafran: #E9BB4E; --azafran-ink: #E9BB4E; --azafran-tint: #3A2F14;
+  --oliva: #9CC57C; --oliva-tint: #1F3118; --granate: #EE97A2; --granate-tint: #3C1D22;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.55 var(--sans); -webkit-text-size-adjust: 100%; }
+.wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.25rem; }
+:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 3px; }
+button, input, select { font: inherit; color: inherit; }
+h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.15; margin: 0; }
+p { margin: 0 0 .75em; }
+
+/* Cabecera */
+.masthead { padding: 2rem 0 0; }
+.masthead .wrap { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem 2rem; }
+.brand h1 { font-size: clamp(2.1rem, 5vw, 2.9rem); font-weight: 800; letter-spacing: -.01em; }
+.brand p { color: var(--muted); margin: .2rem 0 0; }
+nav.tabs { display: flex; gap: .25rem; border-bottom: 1px solid var(--line); }
+nav.tabs a { padding: .55rem .9rem; text-decoration: none; color: var(--muted); font-weight: 500; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+nav.tabs a:hover { color: var(--ink); }
+nav.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+main { padding: 2.75rem 0 4rem; }
+
+/* Constructor */
+.builder { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: clamp(1.25rem, 3vw, 2.25rem); }
+.sentence { font-family: var(--serif); font-size: clamp(1.75rem, 4.2vw, 2.9rem); line-height: 1.2; margin: 0 0 .6rem; min-height: 1.25em; }
+.sentence .mv { color: var(--azul); }
+.builder.past .sentence .mv { color: var(--azafran-ink); }
+.sentence mark { background: none; color: inherit; font-weight: 600; box-shadow: inset 0 -.28em 0 var(--oliva-tint); padding: 0 .05em; }
+.rule-line { color: var(--muted); max-width: 46rem; min-height: 3em; }
+
+.lanes { margin: 1.5rem 0 1.25rem; display: grid; gap: .6rem; }
+.lane { display: grid; grid-template-columns: 8.5rem 1fr minmax(12rem, 15rem); align-items: center; gap: .75rem 1rem; padding: .75rem; border-radius: 10px; opacity: .55; transition: opacity .2s; }
+.lane.active { opacity: 1; }
+#lane-pres { background: var(--azul-tint); --lane: var(--azul); }
+#lane-past { background: var(--azafran-tint); --lane: var(--azafran-ink); }
+.lane-label { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; color: var(--lane); }
+.lane-label small { display: block; font-family: var(--sans); font-weight: 400; font-size: .85rem; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip { display: flex; flex-direction: column; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: .35rem .65rem; cursor: pointer; text-align: left; }
+.chip:hover { border-color: var(--lane); }
+.chip[aria-pressed="true"] { background: var(--lane); border-color: var(--lane); color: var(--surface); }
+.chip-form { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; line-height: 1.2; }
+.chip-name { font-size: .78rem; opacity: .85; }
+.res { position: relative; border-left: 3px solid var(--lane); padding: .2rem 0 .2rem .85rem; }
+.res::before { content: ""; position: absolute; left: -1.1rem; top: 50%; width: .85rem; border-top: 2px solid var(--lane); }
+.res-name { font-size: .85rem; color: var(--muted); display: block; }
+.res-form { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--ink); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: end; }
+.ctl label, .ctl .ctl-name { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .3rem; }
+.segs { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg { background: var(--surface); border: 0; border-right: 1px solid var(--line); padding: .4rem .7rem; cursor: pointer; }
+.seg:last-child { border-right: 0; }
+.seg[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.text-in { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: .45rem .7rem; min-width: 12rem; }
+
+/* Reglas */
+.rules { margin-top: 3rem; max-width: 52rem; }
+.rules h2 { font-size: 1.9rem; margin-bottom: .6rem; }
+.rules h3 { font-size: 1.35rem; margin: 2.2rem 0 .5rem; }
+.rules p { font-family: var(--serif); font-size: 1.12rem; line-height: 1.65; max-width: 42rem; }
+.scroll { overflow-x: auto; margin: 1rem 0; }
+table.ref { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 1rem; }
+table.ref th, table.ref td { text-align: left; vertical-align: top; padding: .6rem .75rem; border-bottom: 1px solid var(--line); }
+table.ref thead th { font-weight: 700; font-size: .9rem; color: var(--muted); border-bottom: 2px solid var(--ink); }
+table.ref tbody th { font-family: var(--serif); font-size: 1.05rem; }
+table.ref em { font-family: var(--serif); font-style: italic; color: var(--muted); }
+.row-pres th:first-child { box-shadow: inset 4px 0 0 var(--azul); }
+.row-past th:first-child { box-shadow: inset 4px 0 0 var(--azafran-ink); }
+dl.cases { margin: 0; }
+dl.cases dt { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; margin-top: 1.4rem; }
+dl.cases dd { margin: .25rem 0 0; font-family: var(--serif); font-size: 1.08rem; line-height: 1.6; max-width: 42rem; }
+.ex { font-style: italic; color: var(--muted); }
+
+/* Conjugador */
+.conj-form { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: .6rem; }
+.conj-form .text-in { font-size: 1.2rem; min-width: 16rem; flex: 0 1 22rem; }
+.btn { background: var(--ink); color: var(--surface); border: 0; border-radius: 8px; padding: .55rem 1.1rem; font-weight: 700; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 500; }
+.try { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; color: var(--muted); font-size: .92rem; margin-bottom: 2rem; }
+.try button { background: none; border: 1px solid var(--line); border-radius: 999px; padding: .15rem .65rem; cursor: pointer; font-family: var(--serif); }
+.try button:hover { border-color: var(--ink); }
+.conj-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1rem 2.5rem; margin-bottom: 1rem; }
+.verb-title { font-size: clamp(2.4rem, 6vw, 3.6rem); font-weight: 800; }
+dl.np { display: flex; flex-wrap: wrap; gap: .5rem 1.75rem; margin: 0; }
+dl.np dt { font-size: .82rem; color: var(--muted); }
+dl.np dd { margin: 0; font-family: var(--serif); font-size: 1.15rem; }
+.legend { font-size: .92rem; color: var(--muted); }
+.irr { text-decoration: underline; text-decoration-color: var(--azafran-ink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.msg { background: var(--azul-tint); border-radius: 8px; padding: .6rem .85rem; max-width: 46rem; }
+.mood { margin-top: 2.25rem; }
+.mood h3 { font-size: 1.6rem; padding-bottom: .4rem; border-bottom: 2px solid var(--ink); margin-bottom: 1.1rem; }
+.tense-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1.6rem 1.75rem; }
+.tense h4 { font-size: 1.1rem; margin-bottom: .35rem; }
+.tense table { border-collapse: collapse; width: 100%; }
+.tense th { text-align: left; font-weight: 400; color: var(--muted); font-size: .85rem; padding: .22rem .6rem .22rem 0; white-space: nowrap; width: 1%; }
+.tense td { font-family: var(--serif); font-size: 1.08rem; padding: .22rem 0; border-bottom: 1px solid var(--line); }
+.tense .alt { display: block; font-size: .95rem; color: var(--muted); }
+.tense details { margin-top: .45rem; font-size: .92rem; }
+.tense summary { cursor: pointer; color: var(--azul); }
+.tense details p { margin: .35rem 0 0; color: var(--muted); }
+
+/* Práctica */
+.p-top { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.p-opts { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; color: var(--muted); font-size: .95rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: clamp(1.25rem, 3vw, 2rem); }
+.conc-sentence { font-family: var(--serif); font-size: clamp(1.35rem, 3vw, 1.9rem); line-height: 1.6; margin-bottom: 1rem; }
+input.blank { font-family: var(--serif); font-size: inherit; width: 11em; max-width: 100%; border: 0; border-bottom: 2px solid var(--ink); background: transparent; padding: 0 .2em; margin: 0 .15em; border-radius: 0; }
+input.drill-input { font-family: var(--serif); font-size: 1.6rem; width: 100%; max-width: 22rem; border: 0; border-bottom: 2px solid var(--ink); background: transparent; padding: .1rem .2rem; border-radius: 0; margin-top: .5rem; }
+input.is-good { border-bottom-color: var(--oliva); color: var(--oliva); }
+input.is-bad { border-bottom-color: var(--granate); color: var(--granate); text-decoration: line-through; }
+.d-verb { font-family: var(--serif); font-size: clamp(2.2rem, 6vw, 3.2rem); font-weight: 800; line-height: 1; margin: 0 0 .5rem; }
+.d-tense { font-size: 1.1rem; margin: 0; }
+.d-person { font-family: var(--serif); font-size: 1.3rem; color: var(--azul); margin: .2rem 0 0; }
+.keys { display: flex; flex-wrap: wrap; gap: .35rem; margin: 1rem 0; }
+.keys button { font-family: var(--serif); font-size: 1.15rem; width: 2.4rem; height: 2.4rem; border: 1px solid var(--line); background: var(--paper); border-radius: 6px; cursor: pointer; }
+.keys button:hover { border-color: var(--ink); }
+.actions { display: flex; gap: .6rem; align-items: center; }
+.fb { margin-top: 1rem; border-radius: 8px; }
+.fb p { margin: 0; }
+.fb.good, .fb.bad { padding: .75rem 1rem; }
+.fb.good { background: var(--oliva-tint); }
+.fb.bad { background: var(--granate-tint); }
+.settings { margin-top: 1.25rem; }
+.settings summary { cursor: pointer; font-weight: 700; }
+.settings fieldset { border: 0; padding: 0; margin: .9rem 0 0; }
+.settings legend { font-size: .9rem; color: var(--muted); margin-bottom: .35rem; }
+.checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .25rem 1rem; }
+.checks label { display: flex; gap: .45rem; align-items: baseline; }
+footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var(--muted); font-size: .9rem; }
+
+@media (max-width: 760px) {
+  .lane { grid-template-columns: 1fr; }
+  .res::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <div class="brand">
+      <h1>Concordancia</h1>
+      <p>Tiempos verbales y conjugación para estudiantes de nivel avanzado</p>
+    </div>
+    <nav class="tabs" aria-label="Secciones">
+      <a href="#concordancia" data-tab="concordancia">Concordancia</a>
+      <a href="#conjugador" data-tab="conjugador">Conjugador</a>
+      <a href="#practica" data-tab="practica">Práctica</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ===== CONCORDANCIA ===== -->
+  <section id="concordancia">
+    <div class="builder" id="builder">
+      <p class="sentence" id="b-sentence" aria-live="polite"></p>
+      <p class="rule-line" id="b-rule"></p>
+      <div class="lanes">
+        <div class="lane" id="lane-pres">
+          <div class="lane-label">Mundo presente<small>El verbo principal mira desde ahora</small></div>
+          <div class="chips"></div>
+          <div class="res"><span class="res-name"></span><span class="res-form"></span></div>
+        </div>
+        <div class="lane" id="lane-past">
+          <div class="lane-label">Mundo pasado<small>El verbo principal mira desde antes</small></div>
+          <div class="chips"></div>
+          <div class="res"><span class="res-name"></span><span class="res-form"></span></div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="ctl"><span class="ctl-name">La acción subordinada es</span>
+          <div class="segs"><button type="button" class="seg" data-timing="sim">simultánea o posterior</button><button type="button" class="seg" data-timing="ant">anterior</button></div>
+        </div>
+        <div class="ctl"><span class="ctl-name">Sujeto de la subordinada</span><div class="segs" id="b-persons"></div></div>
+        <div class="ctl"><label for="b-verb">Verbo subordinado</label><input id="b-verb" class="text-in" value="venir" list="verbs" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+      </div>
+    </div>
+
+    <article class="rules">
+      <h2>La regla general</h2>
+      <p>La concordancia de tiempos decide qué tiempo usamos en la oración subordinada. La pregunta clave es desde qué «mundo» habla el verbo principal: si está anclado en el presente o en el pasado. Después, basta con saber si la acción subordinada ocurre al mismo tiempo o después, o si ya había ocurrido antes.</p>
+      <div class="scroll">
+        <table class="ref">
+          <thead><tr><th scope="col">Verbo principal</th><th scope="col">Acción simultánea o posterior</th><th scope="col">Acción anterior</th></tr></thead>
+          <tbody>
+            <tr class="row-pres"><th scope="row">Mundo presente<br><em>presente, pretérito perfecto, futuro, futuro compuesto, imperativo</em></th>
+              <td>Presente de subjuntivo<br><em>Quiero que vengas.</em></td><td>Pretérito perfecto de subjuntivo<br><em>Me alegra que hayas venido.</em></td></tr>
+            <tr class="row-past"><th scope="row">Mundo pasado<br><em>imperfecto, indefinido, pluscuamperfecto, condicional, condicional compuesto</em></th>
+              <td>Imperfecto de subjuntivo<br><em>Quería que vinieras.</em></td><td>Pluscuamperfecto de subjuntivo<br><em>Me alegró que hubieras venido.</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Casos que conviene repasar</h3>
+      <dl class="cases">
+        <dt>Presente que mira hacia el pasado</dt>
+        <dd>Si el verbo principal está en presente pero la acción subordinada ya terminó, se admiten el imperfecto y el perfecto de subjuntivo. <span class="ex">No creo que lo dijera. No creo que lo haya dicho.</span></dd>
+        <dt>El pretérito perfecto está en la frontera</dt>
+        <dd>Pertenece al mundo presente, pero muchos hablantes lo combinan también con el imperfecto. <span class="ex">Te he pedido que vengas. Te he pedido que vinieras.</span></dd>
+        <dt>El condicional siempre arrastra el pasado</dt>
+        <dd>Aunque hable de un deseo futuro, el condicional pide imperfecto de subjuntivo. <span class="ex">Me gustaría que vinieras mañana.</span></dd>
+        <dt>Como si</dt>
+        <dd>Va siempre con imperfecto o pluscuamperfecto de subjuntivo, sea cual sea el tiempo principal. <span class="ex">Habla como si fuera el jefe. Me miró como si no me hubiera visto nunca.</span></dd>
+        <dt>Ojalá</dt>
+        <dd>El tiempo indica la probabilidad. Presente: deseo posible (<span class="ex">ojalá llueva</span>). Imperfecto: deseo improbable o imposible ahora (<span class="ex">ojalá estuvieras aquí</span>). Pluscuamperfecto: lamento sobre el pasado (<span class="ex">ojalá no lo hubiera dicho</span>).</dd>
+        <dt>Cuando, en cuanto, hasta que y antes de que</dt>
+        <dd>Con una acción futura llevan subjuntivo, nunca futuro. Si el futuro se ve desde el pasado, el subjuntivo pasa a imperfecto. <span class="ex">Te llamaré cuando llegue. Dijo que me llamaría cuando llegara.</span> Antes de que exige subjuntivo siempre.</dd>
+      </dl>
+
+      <h3>Oraciones condicionales con si</h3>
+      <div class="scroll">
+        <table class="ref">
+          <thead><tr><th scope="col">Tipo</th><th scope="col">Condición (si…)</th><th scope="col">Consecuencia</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Real o probable</th><td>presente de indicativo<br><em>Si llueve,</em></td><td>presente, futuro o imperativo<br><em>nos quedamos / nos quedaremos / quédate.</em></td></tr>
+            <tr><th scope="row">Improbable o contraria al presente</th><td>imperfecto de subjuntivo<br><em>Si tuviera tiempo,</em></td><td>condicional simple<br><em>viajaría más.</em></td></tr>
+            <tr><th scope="row">Contraria al pasado</th><td>pluscuamperfecto de subjuntivo<br><em>Si lo hubiera sabido,</em></td><td>condicional compuesto o pluscuamperfecto de subjuntivo<br><em>habría venido / hubiera venido.</em></td></tr>
+            <tr><th scope="row">Mixta</th><td>pluscuamperfecto de subjuntivo<br><em>Si hubiera estudiado medicina,</em></td><td>condicional simple<br><em>ahora sería médica.</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Detrás de si nunca aparece el presente de subjuntivo, y en el español estándar tampoco el condicional.</p>
+
+      <h3>Estilo indirecto en pasado</h3>
+      <p>Cuando el verbo que introduce las palabras de otra persona está en pasado (dijo, contó, explicó), los tiempos retroceden un paso.</p>
+      <div class="scroll">
+        <table class="ref">
+          <thead><tr><th scope="col">Estilo directo</th><th scope="col">Estilo indirecto</th></tr></thead>
+          <tbody>
+            <tr><td>presente<br><em>«Estoy cansado».</em></td><td>imperfecto<br><em>Dijo que estaba cansado.</em></td></tr>
+            <tr><td>indefinido o pretérito perfecto<br><em>«Perdí las llaves». «He terminado».</em></td><td>pluscuamperfecto<br><em>Dijo que había perdido las llaves / que había terminado.</em></td></tr>
+            <tr><td>futuro<br><em>«Vendré mañana».</em></td><td>condicional<br><em>Dijo que vendría al día siguiente.</em></td></tr>
+            <tr><td>futuro compuesto<br><em>«Habré terminado».</em></td><td>condicional compuesto<br><em>Dijo que habría terminado.</em></td></tr>
+            <tr><td>imperativo<br><em>«Ven».</em></td><td>imperfecto de subjuntivo<br><em>Me dijo que viniera.</em></td></tr>
+            <tr><td>presente de subjuntivo<br><em>«Quiero que vengas».</em></td><td>imperfecto de subjuntivo<br><em>Dijo que quería que viniera.</em></td></tr>
+            <tr><td>imperfecto, pluscuamperfecto, condicional</td><td>no cambian<br><em>«Vivía en Lima». Dijo que vivía en Lima.</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===== CONJUGADOR ===== -->
+  <section id="conjugador" hidden>
+    <form class="conj-form" id="conj-form">
+      <label for="conj-input" class="visually-hidden" style="position:absolute;left:-9999px">Infinitivo</label>
+      <input id="conj-input" class="text-in" placeholder="Escribe un infinitivo" list="verbs" autocomplete="off" autocapitalize="off" spellcheck="false" value="tener">
+      <button class="btn" type="submit">Conjugar</button>
+    </form>
+    <div class="try">Prueba con:
+      <button type="button" data-try="ser">ser</button><button type="button" data-try="ir">ir</button><button type="button" data-try="pedir">pedir</button><button type="button" data-try="construir">construir</button><button type="button" data-try="conducir">conducir</button><button type="button" data-try="oír">oír</button><button type="button" data-try="prever">prever</button><button type="button" data-try="averiguar">averiguar</button>
+    </div>
+    <div id="conj-out" aria-live="polite"></div>
+  </section>
+
+  <!-- ===== PRÁCTICA ===== -->
+  <section id="practica" hidden>
+    <div class="p-top">
+      <div class="segs" role="group" aria-label="Tipo de práctica">
+        <button type="button" class="seg" data-mode="conc">Concordancia</button>
+        <button type="button" class="seg" data-mode="drill">Conjugación</button>
+      </div>
+      <div class="p-opts">
+        <label><input type="checkbox" id="opt-lenient"> Aceptar respuestas sin tildes</label>
+        <span id="score" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div id="conc-panel">
+        <p class="ctl"><label for="conc-cat">Tipo de oración</label><select id="conc-cat" class="text-in"></select></p>
+        <p class="conc-sentence" id="conc-sentence"></p>
+      </div>
+      <div id="drill-panel" hidden>
+        <div id="drill-prompt"></div>
+      </div>
+      <div class="keys" aria-label="Letras especiales"><button type="button">á</button><button type="button">é</button><button type="button">í</button><button type="button">ó</button><button type="button">ú</button><button type="button">ü</button><button type="button">ñ</button></div>
+      <div class="actions">
+        <button type="button" class="btn" id="btn-check">Comprobar</button>
+        <button type="button" class="btn ghost" id="btn-next" hidden>Siguiente</button>
+      </div>
+      <div class="fb" id="fb" aria-live="polite"></div>
+    </div>
+
+    <details class="settings" id="drill-settings">
+      <summary>Ajustes de la práctica de conjugación</summary>
+      <fieldset><legend>Tiempos</legend><div class="checks" id="dt-box"></div></fieldset>
+      <fieldset><legend>Verbos</legend><div class="checks" id="dg-box"></div></fieldset>
+    </details>
+  </section>
+</main>
+
+<footer><div class="wrap">Las formas se generan con reglas y una lista de irregulares; ante cualquier duda, consulta el Diccionario panhispánico de dudas de la RAE.</div></footer>
+<datalist id="verbs"></datalist>
+
+<script>
+/* ===== Motor de conjugación ===== */
+const PRON = ['yo', 'tú', 'él / ella / usted', 'nosotros/as', 'vosotros/as', 'ellos / ellas / ustedes'];
+const PRON_SHORT = ['yo', 'tú', 'él', 'nosotros', 'vosotros', 'ellos'];
+
+const SC = {};
+const addSC = (list, t) => list.split(' ').forEach(v => SC[v] = t);
+addSC('pensar cerrar despertar sentar entender perder encender defender empezar comenzar negar calentar recomendar atravesar fregar regar gobernar confesar tender nevar', 'ie');
+addSC('preferir sentir mentir divertir sugerir convertir advertir consentir requerir hervir herir referir invertir', 'ie-i');
+addSC('contar costar encontrar mostrar probar recordar soñar volar acostar aprobar almorzar colgar rogar sonar volver devolver envolver mover llover doler resolver morder soler torcer', 'ue');
+addSC('dormir morir', 'ue-u');
+addSC('pedir servir repetir vestir medir competir despedir impedir seguir conseguir perseguir elegir corregir', 'i');
+addSC('jugar', 'u-ue');
+addSC('enviar confiar esquiar enfriar variar prohibir', 'í');
+addSC('continuar actuar graduar evaluar situar reunir', 'ú');
+
+const NOZC = new Set(['hacer', 'decir', 'cocer', 'recocer', 'mecer']);
+
+const IRR = {
+  ser: {
+    pres: ['soy', 'eres', 'es', 'somos', 'sois', 'son'],
+    pret: ['fui', 'fuiste', 'fue', 'fuimos', 'fuisteis', 'fueron'],
+    impf: ['era', 'eras', 'era', 'éramos', 'erais', 'eran'],
+    subj: ['sea', 'seas', 'sea', 'seamos', 'seáis', 'sean'], tu: 'sé', part: 'sido'
+  },
+  ir: {
+    pres: ['voy', 'vas', 'va', 'vamos', 'vais', 'van'],
+    pret: ['fui', 'fuiste', 'fue', 'fuimos', 'fuisteis', 'fueron'],
+    impf: ['iba', 'ibas', 'iba', 'íbamos', 'ibais', 'iban'],
+    subj: ['vaya', 'vayas', 'vaya', 'vayamos', 'vayáis', 'vayan'], tu: 've', nos: 'vamos', ger: 'yendo', part: 'ido'
+  },
+  estar: {
+    pres: ['estoy', 'estás', 'está', 'estamos', 'estáis', 'están'], pretStem: 'estuv',
+    subj: ['esté', 'estés', 'esté', 'estemos', 'estéis', 'estén']
+  },
+  haber: {
+    pres: ['he', 'has', 'ha', 'hemos', 'habéis', 'han'], pretStem: 'hub', fut: 'habr',
+    subj: ['haya', 'hayas', 'haya', 'hayamos', 'hayáis', 'hayan'], tu: 'he'
+  },
+  tener: { yo: 'tengo', sc: 'ie', pretStem: 'tuv', fut: 'tendr', tu: 'ten' },
+  venir: { yo: 'vengo', sc: 'ie', pretStem: 'vin', fut: 'vendr', tu: 'ven', ger: 'viniendo' },
+  poner: { yo: 'pongo', pretStem: 'pus', fut: 'pondr', tu: 'pon', part: 'puesto' },
+  hacer: { yo: 'hago', pretStem: 'hic', pret3: 'hizo', fut: 'har', tu: 'haz', part: 'hecho' },
+  decir: { yo: 'digo', sc: 'i', pretStem: 'dij', fut: 'dir', tu: 'di', part: 'dicho' },
+  poder: { sc: 'ue', pretStem: 'pud', fut: 'podr', ger: 'pudiendo' },
+  querer: { sc: 'ie', pretStem: 'quis', fut: 'querr' },
+  saber: { yo: 'sé', pretStem: 'sup', fut: 'sabr', subj: ['sepa', 'sepas', 'sepa', 'sepamos', 'sepáis', 'sepan'] },
+  caber: { yo: 'quepo', pretStem: 'cup', fut: 'cabr' },
+  salir: { yo: 'salgo', fut: 'saldr', tu: 'sal' },
+  valer: { yo: 'valgo', fut: 'valdr' },
+  traer: { yo: 'traigo', pretStem: 'traj' },
+  caer: { yo: 'caigo' },
+  'oír': { pres: ['oigo', 'oyes', 'oye', 'oímos', 'oís', 'oyen'], yo: 'oigo' },
+  dar: {
+    pres: ['doy', 'das', 'da', 'damos', 'dais', 'dan'],
+    pret: ['di', 'diste', 'dio', 'dimos', 'disteis', 'dieron'],
+    subj: ['dé', 'des', 'dé', 'demos', 'deis', 'den']
+  },
+  ver: {
+    pres: ['veo', 'ves', 've', 'vemos', 'veis', 'ven'],
+    pret: ['vi', 'viste', 'vio', 'vimos', 'visteis', 'vieron'],
+    impf: ['veía', 'veías', 'veía', 'veíamos', 'veíais', 'veían'], yo: 'veo', part: 'visto'
+  },
+  andar: { pretStem: 'anduv' },
+  'reír': {
+    pres: ['río', 'ríes', 'ríe', 'reímos', 'reís', 'ríen'],
+    pret: ['reí', 'reíste', 'rio', 'reímos', 'reísteis', 'rieron'],
+    subj: ['ría', 'rías', 'ría', 'riamos', 'riais', 'rían'], ger: 'riendo', part: 'reído'
+  }
+};
+
+// Compuestos con prefijo: se conjugan como el verbo base
+const COMP = {
+  obtener: 'tener', mantener: 'tener', contener: 'tener', detener: 'tener', retener: 'tener', sostener: 'tener', entretener: 'tener',
+  componer: 'poner', proponer: 'poner', suponer: 'poner', disponer: 'poner', exponer: 'poner', imponer: 'poner', oponer: 'poner', posponer: 'poner', reponer: 'poner',
+  deshacer: 'hacer', rehacer: 'hacer',
+  convenir: 'venir', prevenir: 'venir', intervenir: 'venir', provenir: 'venir',
+  contradecir: 'decir', predecir: 'decir', desdecir: 'decir',
+  atraer: 'traer', distraer: 'traer', contraer: 'traer', extraer: 'traer', retraer: 'traer',
+  prever: 'ver', entrever: 'ver',
+  sobresalir: 'salir', equivaler: 'valer',
+  decaer: 'caer', recaer: 'caer',
+  'sonreír': 'reír', 'freír': 'reír'
+};
+
+const PART_SUFFIX = [['scribir', 'scrito'], ['cubrir', 'cubierto'], ['abrir', 'abierto'], ['volver', 'vuelto'], ['solver', 'suelto'], ['morir', 'muerto'], ['romper', 'roto']];
+
+const STRIP = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+function changeStem(stem, sc, strong) {
+  if (!sc) return stem;
+  const rep = (from, to) => { const i = stem.lastIndexOf(from); return i < 0 ? stem : stem.slice(0, i) + to + stem.slice(i + from.length); };
+  if (strong) {
+    switch (sc) {
+      case 'ie': case 'ie-i': return rep('e', 'ie');
+      case 'ue': case 'ue-u': return rep('o', 'ue');
+      case 'i': return rep('e', 'i');
+      case 'u-ue': return rep('u', 'ue');
+      case 'í': return rep('i', 'í');
+      case 'ú': return rep('u', 'ú');
+    }
+  } else {
+    switch (sc) {
+      case 'ie-i': case 'i': return rep('e', 'i');
+      case 'ue-u': return rep('o', 'u');
+    }
+  }
+  return stem;
+}
+
+function join(stem, end, v) {
+  if (v.uir) {
+    if (/^[aeoáéó]/.test(end)) return stem + 'y' + end;
+    if (/^i[eóo]/.test(end)) return stem + 'y' + end.slice(1);
+    return stem + end;
+  }
+  if (v.vowelStem) {
+    if (/^i[eóo]/.test(end)) return stem + 'y' + end.slice(1);
+    if (end[0] === 'i') return stem + 'í' + end.slice(1);
+    return stem + end;
+  }
+  if (v.type === 'ar' && /^[eé]/.test(end)) {
+    if (stem.endsWith('gu')) stem = stem.slice(0, -2) + 'gü';
+    else if (stem.endsWith('c')) stem = stem.slice(0, -1) + 'qu';
+    else if (stem.endsWith('g')) stem = stem.slice(0, -1) + 'gu';
+    else if (stem.endsWith('z')) stem = stem.slice(0, -1) + 'c';
+  }
+  if (v.type !== 'ar' && /^[aoáó]/.test(end)) {
+    if (v.guir && stem.endsWith('gu')) stem = stem.slice(0, -1);
+    else if (stem.endsWith('g')) stem = stem.slice(0, -1) + 'j';
+    else if (stem.endsWith('c')) {
+      if (v.zc) stem = stem.slice(0, -1) + 'zc';
+      else if (v.cz) stem = stem.slice(0, -1) + 'z';
+    }
+  }
+  return stem + end;
+}
+
+const accentLast = s => {
+  const m = { a: 'á', e: 'é', i: 'í', o: 'ó', u: 'ú' };
+  const c = s.slice(-1);
+  return m[c] ? s.slice(0, -1) + m[c] : s;
+};
+
+function core(inf, regularOnly) {
+  if (!/(ar|er|ir|ír)$/.test(inf)) return null;
+  const e2 = inf.slice(-2);
+  const type = e2 === 'ar' ? 'ar' : e2 === 'er' ? 'er' : 'ir';
+  const stem = inf.slice(0, -2);
+  const ir = regularOnly ? {} : (IRR[inf] || {});
+  const v = { type, stem };
+  if (!regularOnly) {
+    v.sc = ir.sc || SC[inf];
+    v.guir = type === 'ir' && /gu$/.test(stem);
+    v.uir = type === 'ir' && /u$/.test(stem) && !/[gq]u$/.test(stem);
+    v.vowelStem = type !== 'ar' && /[aeo]$/.test(stem);
+    v.zc = type !== 'ar' && /[aeiouáéíóú]c$/.test(stem) && !NOZC.has(inf);
+    v.cz = type !== 'ar' && /c$/.test(stem) && !v.zc;
+    if (type === 'ir' && /duc$/.test(stem) && !ir.pretStem) ir.pretStem = stem.slice(0, -1) + 'j';
+  }
+  const J = regularOnly ? (s, e) => s + e : (s, e) => join(s, e, v);
+  const CS = regularOnly ? s => s : (s, strong) => changeStem(s, v.sc, strong);
+  const strongIdx = i => i === 0 || i === 1 || i === 2 || i === 5;
+
+  const EP = { ar: ['o', 'as', 'a', 'amos', 'áis', 'an'], er: ['o', 'es', 'e', 'emos', 'éis', 'en'], ir: ['o', 'es', 'e', 'imos', 'ís', 'en'] };
+  const ES = type === 'ar' ? ['e', 'es', 'e', 'emos', 'éis', 'en'] : ['a', 'as', 'a', 'amos', 'áis', 'an'];
+
+  const presInd = ir.pres || EP[type].map((e, i) => (i === 0 && ir.yo) ? ir.yo : J(strongIdx(i) ? CS(stem, true) : stem, e));
+
+  let presSubj;
+  if (ir.subj) presSubj = ir.subj;
+  else if (ir.yo) { const s = ir.yo.slice(0, -1); presSubj = ES.map(e => s + e); }
+  else presSubj = ES.map((e, i) => J(strongIdx(i) ? CS(stem, true) : (type === 'ir' ? CS(stem, false) : stem), e));
+
+  let pret;
+  if (ir.pret) pret = ir.pret;
+  else if (ir.pretStem) {
+    const s = ir.pretStem;
+    pret = [s + 'e', s + 'iste', ir.pret3 || s + 'o', s + 'imos', s + 'isteis', s + (s.endsWith('j') ? 'eron' : 'ieron')];
+  } else if (type === 'ar') pret = ['é', 'aste', 'ó', 'amos', 'asteis', 'aron'].map(e => J(stem, e));
+  else pret = ['í', 'iste', 'ió', 'imos', 'isteis', 'ieron'].map((e, i) => J((i === 2 || i === 5) ? CS(stem, false) : stem, e));
+
+  const impf = ir.impf || (type === 'ar' ? ['aba', 'abas', 'aba', 'ábamos', 'abais', 'aban'] : ['ía', 'ías', 'ía', 'íamos', 'íais', 'ían']).map(e => stem + e);
+
+  const fs = ir.fut || inf.replace('í', 'i');
+  const fut = ['é', 'ás', 'á', 'emos', 'éis', 'án'].map(e => fs + e);
+  const cond = ['ía', 'ías', 'ía', 'íamos', 'íais', 'ían'].map(e => fs + e);
+
+  const b = pret[5].slice(0, -3), ba = accentLast(b);
+  const mk = x => [b + x, b + x + 's', b + x, ba + x + 'mos', b + x + 'is', b + x + 'n'];
+  const impfSubjRa = mk('ra'), impfSubjSe = mk('se'), futSubj = mk('re');
+
+  const ger = ir.ger || (type === 'ar' ? stem + 'ando' : J(CS(stem, false), 'iendo'));
+  let part = ir.part;
+  if (!part && !regularOnly) for (const [a, c] of PART_SUFFIX) if (inf.endsWith(a)) { part = inf.slice(0, -a.length) + c; break; }
+  if (!part) part = type === 'ar' ? stem + 'ado' : J(stem, 'ido');
+
+  const tu = ir.tu || presInd[2];
+  const vos = inf.slice(0, -1) + 'd';
+  const imp = ['—', tu, presSubj[2], ir.nos || presSubj[3], vos, presSubj[5]];
+  const impNeg = ['—', ...[1, 2, 3, 4, 5].map(i => 'no ' + presSubj[i])];
+
+  return { type, presInd, pret, impf, fut, cond, presSubj, impfSubjRa, impfSubjSe, futSubj, imp, impNeg, ger, part };
+}
+
+const HAB = core('haber');
+
+function sylls(w) {
+  const groups = w.match(/[aeiouáéíóúü]+/g) || [];
+  let n = 0;
+  for (const g of groups) { n += 1; for (let i = 1; i < g.length; i++) if (/[aeoáéó]/.test(g[i]) && /[aeoáéó]/.test(g[i - 1])) n++; }
+  return n;
+}
+function accentMono(w) {
+  const m = { a: 'á', e: 'é', i: 'í', o: 'ó', u: 'ú' };
+  let idx = -1;
+  for (let i = 0; i < w.length; i++) if (/[aeo]/.test(w[i])) idx = i;
+  if (idx < 0) for (let i = 0; i < w.length; i++) if (/[iu]/.test(w[i])) idx = i;
+  return idx < 0 ? w : w.slice(0, idx) + m[w[idx]] + w.slice(idx + 1);
+}
+function fixPref(pre, f) {
+  if (f === '—') return f;
+  if (f.startsWith('no ')) return 'no ' + fixPref(pre, f.slice(3));
+  if (/[áéíóú]/.test(f)) return pre + f;
+  if (sylls(f) === 1 && sylls(pre + f) >= 2 && /[aeiouns]$/.test(f)) return pre + accentMono(f);
+  return pre + f;
+}
+
+const SIMPLE_KEYS = ['presInd', 'pret', 'impf', 'fut', 'cond', 'presSubj', 'impfSubjRa', 'impfSubjSe', 'futSubj', 'imp', 'impNeg'];
+
+function addCompounds(r) {
+  const p = r.part;
+  const c = arr => arr.map(h => h + ' ' + p);
+  r.perf = c(HAB.presInd); r.plusc = c(HAB.impf); r.pretAnt = c(HAB.pret);
+  r.futPerf = c(HAB.fut); r.condPerf = c(HAB.cond);
+  r.perfSubj = c(HAB.presSubj); r.pluscSubjRa = c(HAB.impfSubjRa); r.pluscSubjSe = c(HAB.impfSubjSe);
+  r.futPerfSubj = c(HAB.futSubj);
+  r.infComp = 'haber ' + p; r.gerComp = 'habiendo ' + p;
+  return r;
+}
+
+function conjugate(raw) {
+  let inf = (raw || '').trim().toLowerCase();
+  const notes = [];
+  if (/(ar|er|ir|ír)se$/.test(inf)) { inf = inf.slice(0, -2); notes.push('Se muestra sin el pronombre reflexivo (me, te, se, nos, os, se).'); }
+  if (!/^[a-zñáéíóúü]*(ar|er|ir|ír)$/.test(inf) || inf.length < 2) return { error: 'Escribe un infinitivo terminado en -ar, -er o -ir (por ejemplo: cantar, volver, pedir).' };
+  let r, reg;
+  if (COMP[inf]) {
+    const base = COMP[inf], pre = inf.slice(0, inf.length - base.length);
+    const b = core(base);
+    r = { type: b.type };
+    for (const k of SIMPLE_KEYS) r[k] = b[k].map(f => fixPref(pre, f));
+    r.ger = pre + b.ger; r.part = pre + b.part;
+    if (base === 'decir') { r.imp[1] = r.presInd[2]; }
+    if (inf === 'freír') r.part = 'frito';
+    notes.push('Se conjuga como ' + base + '.');
+  } else {
+    r = core(inf);
+  }
+  reg = core(inf, true);
+  addCompounds(r); addCompounds(reg);
+  r.inf = inf; r.notes = notes;
+  r.known = !!(IRR[inf] || COMP[inf] || SC[inf] || ALL_VERBS.includes(inf));
+  r.reg = reg;
+  return r;
+}
+
+const VERB_LIST = {
+  regular: 'hablar trabajar estudiar caminar comprar llamar llevar mirar necesitar tomar viajar ayudar bailar cantar cocinar escuchar esperar ganar terminar usar aprender beber comer comprender correr deber meter vender temer recibir vivir decidir subir sufrir permitir insistir existir compartir',
+  ortografico: 'buscar sacar tocar explicar practicar llegar pagar entregar apagar cruzar organizar averiguar conocer parecer ofrecer crecer nacer merecer agradecer obedecer desaparecer establecer pertenecer reconocer conducir traducir producir reducir introducir vencer convencer ejercer escoger recoger proteger dirigir exigir distinguir construir destruir incluir concluir contribuir influir leer creer poseer romper abrir escribir describir cubrir descubrir',
+  raiz: 'pensar cerrar despertar sentar entender perder encender defender empezar comenzar recomendar preferir sentir mentir divertir sugerir convertir advertir contar costar encontrar mostrar probar recordar soñar volar acostar aprobar almorzar colgar volver devolver envolver mover doler resolver morder dormir morir pedir servir repetir vestir medir competir despedir impedir seguir conseguir elegir corregir jugar enviar confiar esquiar continuar actuar graduar evaluar reunir prohibir',
+  irregular: 'ser estar ir haber tener venir poner hacer decir poder querer saber caber salir valer traer caer oír dar ver andar reír sonreír obtener mantener contener detener sostener componer proponer suponer imponer deshacer convenir prevenir intervenir atraer distraer prever predecir sobresalir'
+};
+const ALL_VERBS = Object.values(VERB_LIST).join(' ').split(' ').concat(['llover', 'anochecer', 'nevar']);
+
+if (typeof module !== 'undefined') module.exports = { conjugate, PRON, VERB_LIST };
+
+</script>
+<script>
+/* ===== Datos de la interfaz ===== */
+const TN = {
+  presInd: 'presente de indicativo', pret: 'pretérito indefinido', impf: 'pretérito imperfecto de indicativo',
+  fut: 'futuro simple', cond: 'condicional simple', perf: 'pretérito perfecto compuesto',
+  plusc: 'pluscuamperfecto de indicativo', pretAnt: 'pretérito anterior', futPerf: 'futuro compuesto',
+  condPerf: 'condicional compuesto', presSubj: 'presente de subjuntivo', impfSubj: 'imperfecto de subjuntivo',
+  perfSubj: 'pretérito perfecto de subjuntivo', pluscSubj: 'pluscuamperfecto de subjuntivo',
+  futSubj: 'futuro de subjuntivo', futPerfSubj: 'futuro compuesto de subjuntivo',
+  imp: 'imperativo afirmativo', impNeg: 'imperativo negativo'
+};
+
+const SECTIONS = [
+  { title: 'Indicativo', tenses: [
+    ['presInd', 'Presente', 'Raíz + -o, -as/-es, -a/-e, -amos/-emos/-imos, -áis/-éis/-ís, -an/-en. Los cambios de raíz (e→ie, o→ue, e→i) aparecen en todas las personas menos nosotros y vosotros.'],
+    ['pret', 'Pretérito indefinido', '-ar: -é, -aste, -ó, -amos, -asteis, -aron. -er/-ir: -í, -iste, -ió, -imos, -isteis, -ieron. Los pretéritos fuertes (tuv-, pud-, hic-, dij-…) no llevan tilde: tuve, tuvo. Los verbos en -ir con cambio de raíz lo muestran en la 3.ª persona: pidió, durmieron.'],
+    ['impf', 'Pretérito imperfecto', '-ar: -aba, -abas, -aba, -ábamos, -abais, -aban. -er/-ir: -ía, -ías, -ía, -íamos, -íais, -ían. Solo hay tres irregulares: ser, ir y ver.'],
+    ['fut', 'Futuro simple', 'Infinitivo completo + -é, -ás, -á, -emos, -éis, -án. Raíces irregulares: tendr-, vendr-, pondr-, saldr-, valdr-, podr-, sabr-, cabr-, habr-, querr-, har-, dir-.'],
+    ['cond', 'Condicional simple', 'La misma raíz que el futuro + las terminaciones del imperfecto de -er/-ir: -ía, -ías, -ía, -íamos, -íais, -ían.'],
+    ['perf', 'Pretérito perfecto compuesto', 'Presente de haber (he, has, ha…) + participio.'],
+    ['plusc', 'Pluscuamperfecto', 'Imperfecto de haber (había, habías…) + participio.'],
+    ['pretAnt', 'Pretérito anterior', 'Indefinido de haber (hube, hubiste…) + participio. Hoy es casi exclusivamente literario.'],
+    ['futPerf', 'Futuro compuesto', 'Futuro de haber (habré, habrás…) + participio.'],
+    ['condPerf', 'Condicional compuesto', 'Condicional de haber (habría, habrías…) + participio.']
+  ] },
+  { title: 'Subjuntivo', tenses: [
+    ['presSubj', 'Presente', 'Se parte de la 1.ª persona del presente de indicativo (tengo → teng-, conozco → conozc-) y se cambia la vocal: -ar toma -e; -er/-ir toman -a. Seis irregulares no siguen esta regla: ser, ir, estar, dar, haber y saber.'],
+    ['impfSubj', 'Pretérito imperfecto', '3.ª persona plural del indefinido sin -ron (tuvieron → tuvie-) + -ra o -se. Las dos formas son equivalentes. Nosotros lleva tilde: tuviéramos, tuviésemos.'],
+    ['perfSubj', 'Pretérito perfecto', 'Presente de subjuntivo de haber (haya, hayas…) + participio.'],
+    ['pluscSubj', 'Pluscuamperfecto', 'Imperfecto de subjuntivo de haber (hubiera/hubiese…) + participio.'],
+    ['futSubj', 'Futuro simple', 'Misma raíz que el imperfecto + -re, -res, -re, -remos, -reis, -ren. Hoy aparece sobre todo en textos jurídicos y en refranes («Adonde fueres, haz lo que vieres»).'],
+    ['futPerfSubj', 'Futuro compuesto', 'Futuro de subjuntivo de haber (hubiere…) + participio. Uso jurídico y literario.']
+  ] },
+  { title: 'Imperativo', tenses: [
+    ['imp', 'Afirmativo', 'Tú: 3.ª persona del presente (habla, come), salvo di, haz, ve, pon, sal, sé, ten, ven. Vosotros: infinitivo sin -r + -d (hablad, id). Usted, nosotros y ustedes: presente de subjuntivo.'],
+    ['impNeg', 'Negativo', 'No + presente de subjuntivo en todas las personas: no hables, no habléis.']
+  ] }
+];
+
+const SENTENCES = [
+  { c: 'presente', s: 'Quiero que tú ___ (venir) a la fiesta.', v: 'venir', p: 1, t: 'presSubj', w: 'Principal en presente y acción simultánea o posterior: presente de subjuntivo.' },
+  { c: 'pasado', s: 'Quería que tú ___ (venir) a la fiesta.', v: 'venir', p: 1, t: 'impfSubj', w: 'Principal en imperfecto (mundo pasado): imperfecto de subjuntivo.' },
+  { c: 'presente', s: 'Te pediré que me ___ (decir) la verdad.', v: 'decir', p: 1, t: 'presSubj', w: 'El futuro pertenece al mundo presente: presente de subjuntivo.' },
+  { c: 'pasado', s: 'Me gustaría que ustedes ___ (traer) algo de postre.', v: 'traer', p: 5, t: 'impfSubj', w: 'El condicional arrastra el imperfecto de subjuntivo, aunque hable del futuro.' },
+  { c: 'presente', s: 'Dudo que ellos ya ___ (llegar).', v: 'llegar', p: 5, t: 'perfSubj', w: 'Principal en presente y acción anterior: pretérito perfecto de subjuntivo.' },
+  { c: 'pasado', s: 'Dudaba que ellos ya ___ (llegar).', v: 'llegar', p: 5, t: 'pluscSubj', w: 'Principal en pasado y acción anterior a ese pasado: pluscuamperfecto de subjuntivo.' },
+  { c: 'presente', s: 'Es necesario que nosotros ___ (empezar) temprano.', v: 'empezar', p: 3, t: 'presSubj', w: 'Expresión impersonal en presente: presente de subjuntivo. Ojo con z → c ante e.' },
+  { c: 'pasado', s: 'Era necesario que nosotros ___ (empezar) temprano.', v: 'empezar', p: 3, t: 'impfSubj', w: 'Expresión impersonal en imperfecto: imperfecto de subjuntivo.' },
+  { c: 'si', s: 'Si yo ___ (tener) más tiempo, aprendería a tocar el piano.', v: 'tener', p: 0, t: 'impfSubj', w: 'Condición improbable o contraria al presente: si + imperfecto de subjuntivo, condicional en la principal.' },
+  { c: 'si', s: 'Si yo ___ (saber) la respuesta, te la habría dicho.', v: 'saber', p: 0, t: 'pluscSubj', w: 'Condición contraria al pasado: si + pluscuamperfecto de subjuntivo.' },
+  { c: 'si', s: 'Si tú ___ (estudiar), aprobarás el examen.', v: 'estudiar', p: 1, t: 'presInd', w: 'Condición real o probable: si + presente de indicativo. Nunca si + presente de subjuntivo.' },
+  { c: 'si', s: 'Si me hubieras llamado, yo ___ (ir) a buscarte.', v: 'ir', p: 0, t: 'condPerf', alt: ['pluscSubj'], w: 'Consecuencia en el pasado: condicional compuesto (también se admite el pluscuamperfecto de subjuntivo: hubiera ido).' },
+  { c: 'si', s: 'Si me tocara la lotería, yo ___ (viajar) por todo el mundo.', v: 'viajar', p: 0, t: 'cond', w: 'Si + imperfecto de subjuntivo pide condicional simple en la principal.' },
+  { c: 'como si', s: 'Habla como si lo ___ (saber) todo.', v: 'saber', p: 2, t: 'impfSubj', w: 'Como si va siempre con imperfecto o pluscuamperfecto de subjuntivo, aunque la principal esté en presente.' },
+  { c: 'como si', s: 'Me miró como si nunca me ___ (ver) antes.', v: 'ver', p: 2, t: 'pluscSubj', w: 'Como si + acción anterior: pluscuamperfecto de subjuntivo.' },
+  { c: 'como si', s: 'Ojalá que mañana no ___ (llover).', v: 'llover', p: 2, t: 'presSubj', w: 'Ojalá + presente de subjuntivo: deseo posible para el futuro.' },
+  { c: 'como si', s: 'Ojalá tú ___ (estar) aquí ahora.', v: 'estar', p: 1, t: 'impfSubj', w: 'Ojalá + imperfecto de subjuntivo: deseo imposible o poco probable en el presente.' },
+  { c: 'como si', s: 'Ojalá yo no le ___ (decir) nada anoche.', v: 'decir', p: 0, t: 'pluscSubj', w: 'Ojalá + pluscuamperfecto de subjuntivo: lamento sobre algo que ya ocurrió.' },
+  { c: 'pasado', s: 'Buscaba un apartamento que ___ (tener) terraza.', v: 'tener', p: 2, t: 'impfSubj', w: 'Antecedente desconocido en una oración de relativo, con la principal en pasado: imperfecto de subjuntivo.' },
+  { c: 'presente', s: 'Busco a alguien que ___ (conocer) bien la ciudad.', v: 'conocer', p: 2, t: 'presSubj', w: 'Antecedente desconocido con la principal en presente: presente de subjuntivo.' },
+  { c: 'presente', s: 'Cuando yo ___ (llegar) a casa, te llamaré.', v: 'llegar', p: 0, t: 'presSubj', w: 'Cuando + acción futura: presente de subjuntivo (no futuro).' },
+  { c: 'pasado', s: 'Me dijo que me llamaría cuando ella ___ (llegar) a casa.', v: 'llegar', p: 2, t: 'impfSubj', w: 'Futuro visto desde el pasado (llamaría): cuando + imperfecto de subjuntivo.' },
+  { c: 'pasado', s: 'Les recomendé que ___ (pedir) la paella.', v: 'pedir', p: 5, t: 'impfSubj', w: 'Principal en indefinido: imperfecto de subjuntivo. Pedir cambia e → i en la raíz: pidieron → pidiera.' },
+  { c: 'presente', s: 'Dile que ___ (volver) pronto.', v: 'volver', p: 2, t: 'presSubj', w: 'El imperativo pertenece al mundo presente: presente de subjuntivo.' },
+  { c: 'presente', s: 'No creo que él ___ (mentir) ayer.', v: 'mentir', p: 2, t: 'impfSubj', alt: ['perfSubj'], w: 'Principal en presente, pero la acción subordinada es pasada: se admite imperfecto (mintiera) o perfecto de subjuntivo (haya mentido).' },
+  { c: 'pasado', s: 'Me alegré de que ustedes ___ (poder) venir.', v: 'poder', p: 5, t: 'impfSubj', w: 'Reacción emocional en indefinido: imperfecto de subjuntivo.' },
+  { c: 'presente', s: 'Me alegro de que ustedes ___ (poder) venir.', v: 'poder', p: 5, t: 'presSubj', alt: ['perfSubj'], w: 'Reacción emocional en presente: presente de subjuntivo (o perfecto, si la visita ya ocurrió).' },
+  { c: 'presente', s: 'Saldremos antes de que ___ (anochecer).', v: 'anochecer', p: 2, t: 'presSubj', w: 'Antes de que siempre exige subjuntivo; con la principal en futuro, presente de subjuntivo.' },
+  { c: 'pasado', s: 'Salimos antes de que ___ (anochecer).', v: 'anochecer', p: 2, t: 'impfSubj', w: 'Antes de que con la principal en indefinido: imperfecto de subjuntivo.' },
+  { c: 'pasado', s: 'Habría preferido que tú nos lo ___ (contar) antes.', v: 'contar', p: 1, t: 'pluscSubj', alt: ['impfSubj'], w: 'Condicional compuesto en la principal: pluscuamperfecto de subjuntivo (también se oye el imperfecto: contaras).' },
+  { c: 'indirecto', s: 'Marta: «Vendré mañana». Marta dijo que ___ (venir) al día siguiente.', v: 'venir', p: 2, t: 'cond', w: 'En el estilo indirecto con verbo introductor en pasado, el futuro pasa a condicional.' },
+  { c: 'indirecto', s: 'Juan: «Estoy cansado». Juan dijo que ___ (estar) cansado.', v: 'estar', p: 2, t: 'impf', w: 'El presente pasa a imperfecto de indicativo.' },
+  { c: 'indirecto', s: 'Ana: «Perdí las llaves». Ana contó que ___ (perder) las llaves.', v: 'perder', p: 2, t: 'plusc', w: 'El indefinido pasa a pluscuamperfecto. En el habla informal también se oye «perdió».' },
+  { c: 'indirecto', s: 'El profesor: «Entregad el trabajo». El profesor nos dijo que ___ (entregar) el trabajo.', v: 'entregar', p: 3, t: 'impfSubj', w: 'Una orden en estilo indirecto en pasado se convierte en imperfecto de subjuntivo.' },
+  { c: 'pasado', s: 'Era imposible que todos ___ (caber) en el coche.', v: 'caber', p: 5, t: 'impfSubj', w: 'Juicio de valor en imperfecto: imperfecto de subjuntivo. Caber tiene pretérito fuerte: cupieron.' },
+  { c: 'presente', s: 'Le aconsejaré que ___ (seguir) estudiando.', v: 'seguir', p: 2, t: 'presSubj', w: 'Futuro en la principal: presente de subjuntivo. Seguir: e → i y gu → g ante a.' },
+  { c: 'presente', s: 'Te lo explicaré para que lo ___ (entender).', v: 'entender', p: 1, t: 'presSubj', w: 'Para que siempre lleva subjuntivo; aquí, presente.' },
+  { c: 'pasado', s: 'Te lo expliqué para que lo ___ (entender).', v: 'entender', p: 1, t: 'impfSubj', w: 'Para que con la principal en indefinido: imperfecto de subjuntivo.' },
+  { c: 'presente', s: 'Espero que vosotros ya ___ (resolver) el problema.', v: 'resolver', p: 4, t: 'perfSubj', w: 'Principal en presente, acción ya terminada: perfecto de subjuntivo. Participio irregular: resuelto.' },
+  { c: 'pasado', s: 'El médico me recomendó que ___ (dormir) más.', v: 'dormir', p: 0, t: 'impfSubj', w: 'Recomendación en indefinido: imperfecto de subjuntivo. Dormir: durmieron → durmiera.' },
+  { c: 'pasado', s: 'Nos sorprendió que el museo ___ (estar) cerrado.', v: 'estar', p: 2, t: 'impfSubj', w: 'Reacción en indefinido: imperfecto de subjuntivo.' },
+  { c: 'pasado', s: 'Siempre nos pedían que ___ (hacer) silencio.', v: 'hacer', p: 3, t: 'impfSubj', w: 'Petición en imperfecto: imperfecto de subjuntivo. Nosotros lleva tilde: hiciéramos.' }
+];
+
+const CATS = { todas: 'Todas', presente: 'Mundo presente', pasado: 'Mundo pasado', si: 'Oraciones con si', 'como si': 'Como si y ojalá', indirecto: 'Estilo indirecto' };
+
+/* ===== Utilidades ===== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+
+function formsFor(r, t, p) {
+  if (t === 'impfSubj') return [r.impfSubjRa[p], r.impfSubjSe[p]];
+  if (t === 'pluscSubj') return [r.pluscSubjRa[p], r.pluscSubjSe[p]];
+  if (t === 'futSubj' || t === 'futPerfSubj' || t === 'imp' || t === 'impNeg' || r[t]) return [r[t][p]];
+  return [];
+}
+const norm = s => s.toLowerCase().trim().replace(/\s+/g, ' ');
+function grade(input, answers) {
+  const a = norm(input);
+  if (!a) return 'empty';
+  if (answers.some(x => norm(x) === a)) return 'ok';
+  if (answers.some(x => STRIP(norm(x)) === STRIP(a))) return 'accent';
+  return 'wrong';
+}
+
+/* ===== Pestañas ===== */
+const VIEWS = ['concordancia', 'conjugador', 'practica'];
+function showView() {
+  const h = location.hash.slice(1);
+  const v = VIEWS.includes(h) ? h : 'concordancia';
+  VIEWS.forEach(id => {
+    document.getElementById(id).hidden = id !== v;
+    const tab = document.querySelector(`[data-tab="${id}"]`);
+    tab.setAttribute('aria-current', id === v ? 'page' : 'false');
+  });
+}
+window.addEventListener('hashchange', showView);
+
+/* ===== Constructor de oraciones ===== */
+const LANES = {
+  pres: [['presInd', 'presente'], ['perf', 'pretérito perfecto'], ['fut', 'futuro'], ['futPerf', 'futuro compuesto']],
+  past: [['impf', 'imperfecto'], ['pret', 'indefinido'], ['plusc', 'pluscuamperfecto'], ['cond', 'condicional'], ['condPerf', 'condicional compuesto']]
+};
+const B = { main: 'presInd', timing: 'sim', p: 1, verb: 'venir' };
+
+function buildLanes() {
+  const q = conjugate('querer');
+  for (const lane of ['pres', 'past']) {
+    const box = document.querySelector(`#lane-${lane} .chips`);
+    box.innerHTML = LANES[lane].map(([k, n]) =>
+      `<button type="button" class="chip" data-main="${k}"><span class="chip-form">${q[k][2]}</span><span class="chip-name">${n}</span></button>`).join('');
+  }
+  document.querySelectorAll('[data-main]').forEach(b => b.addEventListener('click', () => { B.main = b.dataset.main; renderBuilder(); }));
+  $('#b-persons').innerHTML = PRON_SHORT.map((n, i) => `<button type="button" class="seg" data-p="${i}">${n}</button>`).join('');
+  document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => { B.p = +b.dataset.p; renderBuilder(); }));
+  document.querySelectorAll('[data-timing]').forEach(b => b.addEventListener('click', () => { B.timing = b.dataset.timing; renderBuilder(); }));
+  $('#b-verb').addEventListener('input', e => { B.verb = e.target.value; renderBuilder(); });
+}
+
+function renderBuilder() {
+  const q = conjugate('querer');
+  const lane = LANES.pres.some(([k]) => k === B.main) ? 'pres' : 'past';
+  const ant = B.timing === 'ant';
+  const target = lane === 'pres' ? (ant ? 'perfSubj' : 'presSubj') : (ant ? 'pluscSubj' : 'impfSubj');
+  const r = conjugate(B.verb || '');
+  document.querySelectorAll('[data-main]').forEach(b => b.setAttribute('aria-pressed', b.dataset.main === B.main));
+  document.querySelectorAll('[data-p]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.p === B.p));
+  document.querySelectorAll('[data-timing]').forEach(b => b.setAttribute('aria-pressed', b.dataset.timing === B.timing));
+  $('#builder').classList.toggle('past', lane === 'past');
+  $('#lane-pres').classList.toggle('active', lane === 'pres');
+  $('#lane-past').classList.toggle('active', lane === 'past');
+  $('#lane-pres .res-name').textContent = TN[ant ? 'perfSubj' : 'presSubj'];
+  $('#lane-past .res-name').textContent = TN[ant ? 'pluscSubj' : 'impfSubj'];
+  const out = $('#b-sentence'), rule = $('#b-rule');
+  if (r.error) {
+    out.innerHTML = `Mi profesora <span class="mv">${q[B.main][2]}</span> que ${PRON_SHORT[B.p]} <mark>…</mark>`;
+    rule.textContent = r.error;
+    document.querySelectorAll('.res-form').forEach(e => e.textContent = '');
+    return;
+  }
+  const f = formsFor(r, target, B.p);
+  out.innerHTML = `Mi profesora <span class="mv">${esc(q[B.main][2])}</span> que ${PRON_SHORT[B.p]}${ant ? ' ya' : ''} <mark>${esc(f[0])}</mark>.`;
+  $(`#lane-${lane} .res-form`).textContent = f.join(' / ');
+  $(`#lane-${lane === 'pres' ? 'past' : 'pres'} .res-form`).textContent = '';
+  const mainName = TN[B.main];
+  let txt = `Verbo principal en ${mainName} (mundo ${lane === 'pres' ? 'presente' : 'pasado'}) y acción ${ant ? 'anterior' : 'simultánea o posterior'}: ${TN[target]}.`;
+  if (f.length > 1) txt += ` La forma en -se (${f[1]}) es equivalente.`;
+  if (B.main === 'perf' && !ant) txt += ` Con el pretérito perfecto también se oye el imperfecto: ${r.impfSubjRa[B.p]}.`;
+  if (r.notes.length) txt += ' ' + r.notes.join(' ');
+  rule.textContent = txt;
+}
+
+/* ===== Conjugador ===== */
+function cellHTML(r, key, p) {
+  const regKey = key;
+  const mark = (f, rf) => `<span class="${f !== rf ? 'irr' : ''}">${esc(f)}</span>`;
+  if (key === 'impfSubj' || key === 'pluscSubj') {
+    const a = key + 'Ra', b = key + 'Se';
+    return `${mark(r[a][p], r.reg[a][p])}<span class="alt">${mark(r[b][p], r.reg[b][p])}</span>`;
+  }
+  return mark(r[regKey][p], r.reg[regKey][p]);
+}
+
+function renderConj(v) {
+  const box = $('#conj-out');
+  const r = conjugate(v);
+  if (r.error) { box.innerHTML = `<p class="msg">${esc(r.error)}</p>`; return; }
+  let h = `<div class="conj-head"><h2 class="verb-title">${esc(r.inf)}</h2>`;
+  const np = [['Gerundio', 'ger'], ['Participio', 'part'], ['Infinitivo compuesto', 'infComp'], ['Gerundio compuesto', 'gerComp']];
+  h += `<dl class="np">` + np.map(([n, k]) => `<div><dt>${n}</dt><dd class="${r[k] !== r.reg[k] ? 'irr' : ''}">${esc(r[k])}</dd></div>`).join('') + `</dl></div>`;
+  const notes = [...r.notes];
+  if (!r.known) notes.push('Este verbo no está en la lista del programa: las formas se generan con las reglas regulares y ortográficas. Si tiene cambio de raíz, compruébalo en el diccionario de la RAE.');
+  h += `<p class="legend"><span class="irr">Subrayado</span>: la forma se aparta del modelo regular (cambio de raíz, cambio ortográfico o irregularidad).</p>`;
+  if (notes.length) h += `<p class="msg">${notes.map(esc).join(' ')}</p>`;
+  for (const sec of SECTIONS) {
+    h += `<section class="mood"><h3>${sec.title}</h3><div class="tense-grid">`;
+    for (const [k, name, how] of sec.tenses) {
+      h += `<div class="tense"><h4>${name}</h4><table><tbody>`;
+      for (let p = 0; p < 6; p++) {
+        if ((k === 'imp' || k === 'impNeg') && p === 0) continue;
+        h += `<tr><th scope="row">${PRON[p]}</th><td>${cellHTML(r, k, p)}</td></tr>`;
+      }
+      h += `</tbody></table><details><summary>Cómo se forma</summary><p>${how}</p></details></div>`;
+    }
+    h += `</div></section>`;
+  }
+  box.innerHTML = h;
+}
+
+/* ===== Práctica ===== */
+const S = { mode: 'conc', ok: 0, n: 0, streak: 0, checked: false, cur: null, queue: [] };
+
+function lenient() { return $('#opt-lenient').checked; }
+function updateScore() { $('#score').textContent = `${S.ok} de ${S.n} correctas, racha de ${S.streak}`; }
+
+function nextConc() {
+  const cat = $('#conc-cat').value;
+  if (!S.queue.length) S.queue = shuffle(SENTENCES.filter(x => cat === 'todas' || x.c === cat).slice());
+  const it = S.queue.pop();
+  const r = conjugate(it.v);
+  let answers = formsFor(r, it.t, it.p);
+  const extra = (it.alt || []).flatMap(t => formsFor(r, t, it.p));
+  S.cur = { answers, all: answers.concat(extra), why: it.w, extra };
+  const [before, after] = it.s.split('___');
+  $('#conc-sentence').innerHTML = `${esc(before)}<input id="ans" class="blank" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Tu respuesta">${esc(after)}`;
+  resetCheck();
+}
+
+function nextDrill() {
+  const tenses = [...document.querySelectorAll('[name="dt"]:checked')].map(x => x.value);
+  const groups = [...document.querySelectorAll('[name="dg"]:checked')].map(x => x.value);
+  const box = $('#drill-card');
+  if (!tenses.length || !groups.length) {
+    $('#drill-prompt').innerHTML = `<p class="msg">Marca al menos un tiempo y un grupo de verbos en los ajustes.</p>`;
+    S.cur = null; return;
+  }
+  const verbs = groups.flatMap(g => VERB_LIST[g].split(' '));
+  const v = pick(verbs), t = pick(tenses);
+  const p = (t === 'imp' || t === 'impNeg') ? 1 + Math.floor(Math.random() * 5) : Math.floor(Math.random() * 6);
+  const r = conjugate(v);
+  const answers = formsFor(r, t, p);
+  S.cur = { answers, all: answers, why: '', extra: [] };
+  $('#drill-prompt').innerHTML = `<p class="d-verb">${esc(v)}</p><p class="d-tense">${TN[t]}</p><p class="d-person">${PRON[p]}</p>
+    <input id="ans" class="drill-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Tu respuesta">`;
+  resetCheck();
+}
+
+function resetCheck() {
+  S.checked = false;
+  $('#fb').innerHTML = ''; $('#fb').className = 'fb';
+  $('#btn-check').hidden = false; $('#btn-next').hidden = true;
+  const a = $('#ans');
+  if (a) { a.addEventListener('keydown', onKey); setTimeout(() => a.focus(), 0); }
+}
+
+function onKey(e) { if (e.key === 'Enter') { e.preventDefault(); S.checked ? next() : check(); } }
+
+function check() {
+  if (!S.cur || S.checked) return;
+  const a = $('#ans');
+  const g = grade(a.value, S.cur.all);
+  if (g === 'empty') { $('#fb').innerHTML = '<p>Escribe una respuesta o pulsa «Siguiente» para saltar.</p>'; $('#btn-next').hidden = false; return; }
+  S.checked = true; S.n++;
+  const correct = g === 'ok' || (g === 'accent' && lenient());
+  if (correct) { S.ok++; S.streak++; } else S.streak = 0;
+  const main = S.cur.answers.join(' / ');
+  let msg;
+  if (g === 'ok') msg = `<strong>Correcto.</strong> ${S.cur.answers.length > 1 ? 'Formas válidas: ' + esc(main) + '.' : ''}`;
+  else if (correct) msg = `<strong>Correcto, pero revisa las tildes:</strong> ${esc(main)}.`;
+  else if (g === 'accent') msg = `<strong>Casi: faltan o sobran tildes.</strong> La forma es ${esc(main)}.`;
+  else msg = `<strong>No es correcto.</strong> La forma es ${esc(main)}.`;
+  if (S.cur.extra.length) msg += ` También se acepta: ${esc(S.cur.extra.join(' / '))}.`;
+  if (S.cur.why) msg += `<br>${esc(S.cur.why)}`;
+  $('#fb').innerHTML = `<p>${msg}</p>`;
+  $('#fb').className = 'fb ' + (correct ? 'good' : 'bad');
+  a.classList.add(correct ? 'is-good' : 'is-bad');
+  a.readOnly = true;
+  $('#btn-check').hidden = true; $('#btn-next').hidden = false; $('#btn-next').focus();
+  updateScore();
+}
+
+function next() { S.mode === 'conc' ? nextConc() : nextDrill(); }
+
+function setMode(m) {
+  S.mode = m;
+  document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
+  $('#conc-panel').hidden = m !== 'conc';
+  $('#drill-panel').hidden = m !== 'drill';
+  $('#drill-settings').hidden = m !== 'drill';
+  next();
+}
+
+/* ===== Inicio ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  showView();
+  buildLanes(); renderBuilder();
+
+  $('#verbs').innerHTML = ALL_VERBS.slice().sort((a, b) => a.localeCompare(b, 'es')).map(v => `<option value="${v}">`).join('');
+  $('#conj-form').addEventListener('submit', e => { e.preventDefault(); renderConj($('#conj-input').value); });
+  document.querySelectorAll('[data-try]').forEach(b => b.addEventListener('click', () => { $('#conj-input').value = b.dataset.try; renderConj(b.dataset.try); }));
+  renderConj('tener');
+
+  $('#conc-cat').innerHTML = Object.entries(CATS).map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
+  $('#conc-cat').addEventListener('change', () => { S.queue = []; nextConc(); });
+  const DT = [['presInd', 1], ['pret', 1], ['impf', 1], ['fut', 1], ['cond', 1], ['perf', 0], ['plusc', 0], ['futPerf', 0], ['condPerf', 0], ['presSubj', 1], ['impfSubj', 1], ['perfSubj', 0], ['pluscSubj', 0], ['imp', 0], ['impNeg', 0]];
+  $('#dt-box').innerHTML = DT.map(([k, on]) => `<label><input type="checkbox" name="dt" value="${k}" ${on ? 'checked' : ''}> ${TN[k]}</label>`).join('');
+  const DG = [['regular', 'Regulares'], ['ortografico', 'Con cambio ortográfico'], ['raiz', 'Con cambio de raíz'], ['irregular', 'Irregulares']];
+  $('#dg-box').innerHTML = DG.map(([k, n]) => `<label><input type="checkbox" name="dg" value="${k}" checked> ${n}</label>`).join('');
+  document.querySelectorAll('[name="dt"],[name="dg"]').forEach(x => x.addEventListener('change', () => { if (S.mode === 'drill') nextDrill(); }));
+
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  $('#btn-check').addEventListener('click', check);
+  $('#btn-next').addEventListener('click', next);
+  document.querySelectorAll('.keys button').forEach(b => b.addEventListener('mousedown', e => e.preventDefault()));
+  document.querySelectorAll('.keys button').forEach(b => b.addEventListener('click', () => {
+    const a = $('#ans'); if (!a || a.readOnly) return;
+    const s = a.selectionStart ?? a.value.length, e = a.selectionEnd ?? a.value.length;
+    a.value = a.value.slice(0, s) + b.textContent + a.value.slice(e);
+    a.focus(); a.setSelectionRange(s + 1, s + 1);
+  }));
+  setMode('conc'); updateScore();
+});
+
+</script>
+</body>
+</html>
