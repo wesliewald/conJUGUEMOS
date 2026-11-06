@@ -59,7 +59,20 @@ main { padding: 2.75rem 0 4rem; }
 .sentence .mv { color: var(--azul); }
 .builder.past .sentence .mv { color: var(--azafran-ink); }
 .sentence mark { background: none; color: inherit; font-weight: 600; box-shadow: inset 0 -.28em 0 var(--oliva-tint); padding: 0 .05em; }
-.rule-line { color: var(--muted); max-width: 46rem; min-height: 3em; }
+.rule-line { color: var(--muted); max-width: 46rem; margin-bottom: .5rem; }
+.rule-line.nuance { color: var(--ink); }
+.b-trans { margin: 0 0 1.1rem; padding-left: .9rem; border-left: 3px solid var(--line); }
+.b-tag { display: block; font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+#b-en { font-family: var(--serif); font-style: italic; font-size: clamp(1.15rem, 2.4vw, 1.45rem); margin: .1rem 0 0; }
+#b-en-alt { font-family: var(--serif); font-style: italic; color: var(--muted); margin: .1rem 0 0; }
+#b-en-alt:empty { display: none; }
+.compare { margin-top: 1.5rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+.compare summary { cursor: pointer; font-weight: 700; }
+.compare table.ref td[lang="es"] { font-family: var(--serif); }
+.compare table.ref td[lang="en"] { font-family: var(--serif); font-style: italic; }
+.compare .alt-en { color: var(--muted); font-size: .92rem; }
+.compare tr.is-current td, .compare tr.is-current th { background: var(--azul-tint); }
+.compare tr.row-past.is-current td, .compare tr.row-past.is-current th { background: var(--azafran-tint); }
 
 .lanes { margin: 1.5rem 0 1.25rem; display: grid; gap: .6rem; }
 .lane { display: grid; grid-template-columns: 8.5rem 1fr minmax(12rem, 15rem); align-items: center; gap: .75rem 1rem; padding: .75rem; border-radius: 10px; opacity: .55; transition: opacity .2s; }
@@ -202,7 +215,13 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
   <section id="concordancia">
     <div class="builder" id="builder">
       <p class="sentence" id="b-sentence" aria-live="polite"></p>
+      <div class="b-trans" lang="en">
+        <span class="b-tag">English</span>
+        <p id="b-en" aria-live="polite"></p>
+        <p id="b-en-alt"></p>
+      </div>
       <p class="rule-line" id="b-rule"></p>
+      <p class="rule-line nuance" id="b-nuance"></p>
       <div class="lanes">
         <div class="lane" id="lane-pres">
           <div class="lane-label">Mundo presente<small data-en="The main verb looks out from now">El verbo principal mira desde ahora</small></div>
@@ -222,6 +241,10 @@ footer { border-top: 1px solid var(--line); padding: 1.5rem 0 2.5rem; color: var
         <div class="ctl"><span class="ctl-name" data-en="Subject of the subordinate clause">Sujeto de la subordinada</span><div class="segs" id="b-persons"></div></div>
         <div class="ctl"><label for="b-verb" data-en="Subordinate verb">Verbo subordinado</label><input id="b-verb" class="text-in" value="venir" list="verbs" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
       </div>
+      <details class="compare">
+        <summary data-en="Compare every main tense">Comparar todos los tiempos principales</summary>
+        <div class="scroll"><table class="ref" id="b-compare-table"></table></div>
+      </details>
     </div>
 
     <article class="rules" data-lang="es">
@@ -758,6 +781,46 @@ const TN_EN = {
   imp: 'affirmative command', impNeg: 'negative command'
 };
 
+/* ===== Traducción al inglés del constructor ===== */
+const GLOSS = {};
+`hablar:speak|spoken;trabajar:work|worked;estudiar:study|studied;caminar:walk|walked;comprar:buy it|bought it;llamar:call|called;llevar:take it|taken it;mirar:look|looked;necesitar:need|needed;tomar:take it|taken it;viajar:travel|traveled;ayudar:help|helped;bailar:dance|danced;cantar:sing|sung;cocinar:cook|cooked;escuchar:listen|listened;esperar:wait|waited;ganar:win|won;terminar:finish it|finished it;usar:use it|used it;aprender:learn|learned;beber:drink|drunk;comer:eat|eaten;comprender:understand it|understood it;correr:run|run;deber:owe|owed;meter:put it in|put it in;vender:sell it|sold it;temer:fear|feared;recibir:receive|received;vivir:live|lived;decidir:decide|decided;subir:go up|gone up;sufrir:suffer|suffered;permitir:allow|allowed;insistir:insist|insisted;existir:exist|existed;compartir:share|shared;
+buscar:look for|looked for;sacar:take it out|taken it out;tocar:play|played;explicar:explain it|explained it;practicar:practice|practiced;llegar:arrive|arrived;pagar:pay it|paid it;entregar:hand it in|handed it in;apagar:turn it off|turned it off;cruzar:cross|crossed;organizar:organize|organized;averiguar:find out|found out;conocer:meet|met;parecer:seem|seemed;ofrecer:offer|offered;crecer:grow|grown;nacer:be born|been born;merecer:deserve|deserved;agradecer:be grateful|been grateful;obedecer:obey|obeyed;desaparecer:disappear|disappeared;establecer:establish|established;pertenecer:belong|belonged;reconocer:recognize|recognized;conducir:drive|driven;traducir:translate it|translated it;producir:produce|produced;reducir:reduce|reduced;introducir:introduce|introduced;vencer:win|won;convencer:convince|convinced;ejercer:practice|practiced;escoger:choose it|chosen it;recoger:pick it up|picked it up;proteger:protect|protected;dirigir:direct|directed;exigir:demand|demanded;distinguir:distinguish|distinguished;construir:build it|built it;destruir:destroy|destroyed;incluir:include|included;concluir:conclude|concluded;contribuir:contribute|contributed;influir:influence|influenced;leer:read it|read it;creer:believe|believed;poseer:own|owned;romper:break it|broken it;abrir:open it|opened it;escribir:write it|written it;describir:describe|described;cubrir:cover|covered;descubrir:discover|discovered;
+pensar:think|thought;cerrar:close it|closed it;despertar:wake up|woken up;sentar:sit down|sat down;entender:understand it|understood it;perder:lose it|lost it;encender:turn it on|turned it on;defender:defend|defended;empezar:start|started;comenzar:begin|begun;recomendar:recommend|recommended;preferir:prefer|preferred;sentir:feel|felt;mentir:lie|lied;divertir:have fun|had fun;sugerir:suggest|suggested;convertir:convert|converted;advertir:warn|warned;contar:tell|told;costar:cost|cost;encontrar:find it|found it;mostrar:show it|shown it;probar:try it|tried it;recordar:remember it|remembered it;soñar:dream|dreamed;volar:fly|flown;acostar:go to bed|gone to bed;aprobar:pass|passed;almorzar:have lunch|had lunch;colgar:hang up|hung up;volver:come back|come back;devolver:give it back|given it back;envolver:wrap|wrapped;mover:move|moved;doler:hurt|hurt;resolver:solve it|solved it;morder:bite|bitten;soler:usually do|usually done;dormir:sleep|slept;morir:die|died;pedir:ask for|asked for;servir:serve|served;repetir:repeat it|repeated it;vestir:get dressed|gotten dressed;medir:measure|measured;competir:compete|competed;despedir:say goodbye|said goodbye;impedir:prevent|prevented;seguir:follow|followed;conseguir:get it|gotten it;perseguir:chase|chased;elegir:choose it|chosen it;corregir:correct it|corrected it;jugar:play|played;enviar:send it|sent it;confiar:trust|trusted;esquiar:ski|skied;enfriar:cool|cooled;variar:vary|varied;continuar:continue|continued;actuar:act|acted;graduar:graduate|graduated;evaluar:evaluate|evaluated;situar:place|placed;reunir:get together|gotten together;prohibir:forbid|forbidden;
+ser:be|been;estar:be|been;ir:go|gone;haber:have|had;tener:have|had;venir:come|come;poner:put it away|put it away;hacer:do it|done it;decir:say it|said it;poder:be able|been able;querer:want|wanted;saber:know it|known it;caber:fit|fit;salir:go out|gone out;valer:be worth|been worth;traer:bring it|brought it;caer:fall|fallen;oír:hear it|heard it;dar:give it|given it;ver:see it|seen it;andar:walk|walked;reír:laugh|laughed;sonreír:smile|smiled;freír:fry|fried;obtener:get it|gotten it;mantener:maintain|maintained;contener:contain|contained;detener:stop|stopped;retener:retain|retained;sostener:hold|held;entretener:entertain|entertained;componer:compose|composed;proponer:propose|proposed;suponer:suppose|supposed;disponer:arrange|arranged;exponer:exhibit|exhibited;imponer:impose|imposed;oponer:oppose|opposed;posponer:postpone|postponed;reponer:replace|replaced;deshacer:undo it|undone it;rehacer:redo|redone;convenir:agree|agreed;prevenir:prevent|prevented;intervenir:intervene|intervened;provenir:come from|come from;atraer:attract|attracted;distraer:distract|distracted;contraer:contract|contracted;extraer:extract|extracted;prever:foresee|foreseen;entrever:glimpse|glimpsed;predecir:predict|predicted;contradecir:contradict|contradicted;desdecir:take back|taken back;sobresalir:stand out|stood out;equivaler:be equivalent|been equivalent;decaer:decline|declined;recaer:relapse|relapsed;
+llover:rain|rained;nevar:snow|snowed;anochecer:get dark|gotten dark;levantar:get up|gotten up;llamarse:be called|been called;
+negar:deny|denied;calentar:heat up|heated up;atravesar:cross|crossed;fregar:wash up|washed up;regar:water|watered;gobernar:govern|governed;confesar:confess|confessed;tender:tend|tended;consentir:consent|consented;requerir:require|required;hervir:boil|boiled;herir:hurt|hurt;referir:refer|referred;invertir:invest|invested;costar:cost|cost;rogar:beg|begged;sonar:ring|rung;torcer:twist|twisted;despedir:say goodbye|said goodbye;cocer:cook|cooked`
+  .split(';').map(s => s.trim()).filter(Boolean).forEach(s => { const [k, v] = s.split(':'); const [base, pp] = v.split('|'); GLOSS[k] = { base, pp }; });
+
+const OBJ = { 0: 'me', 1: 'you', vos: 'you', 2: 'him', 3: 'us', 4: 'you all', 5: 'them' };
+const EN_MAIN = {
+  presInd: 'wants', perf: 'has wanted', fut: 'will want', futPerf: 'will have wanted',
+  impf: 'wanted', pret: 'wanted', plusc: 'had wanted', cond: 'would like', condPerf: 'would have liked'
+};
+const EN_ALT = {
+  fut: 'probably wants', impf: 'used to want', futPerf: 'has probably wanted', cond: 'probably wanted'
+};
+const NUANCE = {
+  presInd: ['Un deseo actual: ahora mismo lo quiere.', 'A current wish: she wants it right now.'],
+  perf: ['Un deseo que se mantiene hasta ahora; suele sugerir insistencia o un periodo que llega al presente.', 'A wish that has lasted up to now; it often suggests insistence, or a stretch of time reaching the present.'],
+  fut: ['Un deseo proyectado al futuro. También puede ser una suposición sobre el presente (futuro de probabilidad): «seguramente quiere».', 'A wish projected into the future. It can also be a guess about the present (future of probability): “she probably wants.”'],
+  futPerf: ['Un deseo visto como cumplido en un punto del futuro, o una suposición sobre el pasado reciente: «habrá querido» = «seguramente ha querido».', 'A wish seen as complete by some point in the future, or a guess about the recent past: “habrá querido” = “she has probably wanted.”'],
+  impf: ['Un deseo de fondo en el pasado, sin principio ni final claros. Describe la situación sin decir si se cumplió, y también puede ser habitual («solía querer»). El inglés traduce quería y quiso igual («wanted»): la diferencia está solo en el español.', 'A background wish in the past, with no clear beginning or end. It sets the scene without saying whether anything came of it, and it can also be habitual (“used to want”). English translates both quería and quiso as “wanted,” so the difference lives only in the Spanish.'],
+  pret: ['El deseo como un hecho cerrado en un momento concreto del pasado. Con querer, el indefinido sugiere que el deseo se manifestó o se puso en práctica.', 'The wish as a completed event at a specific moment in the past. With querer, the preterite suggests the wish was expressed or acted on.'],
+  plusc: ['Un deseo anterior a otro momento del pasado: ya lo quería antes de ese punto.', 'A wish that came before another past moment: she had already wanted it by then.'],
+  cond: ['Un deseo cortés o hipotético. Aunque pide imperfecto de subjuntivo, suele referirse al presente o al futuro: «le gustaría que vinieras mañana». También puede expresar probabilidad en el pasado.', 'A polite or hypothetical wish. Although it takes the imperfect subjunctive, it usually refers to now or the future: “she’d like you to come tomorrow.” It can also express probability in the past.'],
+  condPerf: ['Un deseo sobre un pasado que no ocurrió: lo habría querido, pero no pasó.', 'A wish about a past that didn’t happen: she would have liked it, but it didn’t happen.']
+};
+const NUANCE_ANT = ['La acción subordinada es anterior: lo importante es que ya esté hecha.', 'The subordinate action is earlier: what matters is that it is already done.'];
+
+function translateBuilder(main, ant, p, inf) {
+  const g = GLOSS[inf];
+  if (!g) return null;
+  const o = OBJ[p];
+  const tail = ant ? `to have already ${g.pp}` : `to ${g.base}`;
+  const mk = m => `My teacher ${m} ${o} ${tail}.`;
+  return { main: mk(EN_MAIN[main]), alt: EN_ALT[main] ? mk(EN_ALT[main]) : null };
+}
+
 /* ===== Formación de los tiempos: [clave, nombre, español, inglés] ===== */
 const SECTIONS = [
   { title: 'Indicativo', tenses: [
@@ -964,6 +1027,7 @@ function renderBuilder() {
     out.innerHTML = `Mi profesora <span class="mv">${q[B.main][2]}</span> que ${pron} <mark>…</mark>`;
     rule.textContent = errText();
     document.querySelectorAll('.res-form').forEach(e => e.textContent = '');
+    $('#b-en').textContent = ''; $('#b-en-alt').textContent = ''; $('#b-nuance').textContent = '';
     return;
   }
   const f = formsFor(r, target, B.p);
@@ -985,6 +1049,33 @@ function renderBuilder() {
   }
   if (r.notes.length) txt += ' ' + r.notes.map(noteText).join(' ');
   rule.textContent = txt;
+  renderTranslation(r, ant);
+}
+
+function renderTranslation(r, ant) {
+  const tr = translateBuilder(B.main, ant, B.p, r.inf);
+  if (!tr) {
+    $('#b-en').textContent = L(`Todavía no hay traducción para «${r.inf}».`, `There’s no English gloss for “${r.inf}” yet.`);
+    $('#b-en-alt').textContent = '';
+  } else {
+    $('#b-en').textContent = tr.main;
+    $('#b-en-alt').textContent = tr.alt ? L('También: ', 'Also: ') + tr.alt : '';
+  }
+  $('#b-nuance').innerHTML = `<strong>${L('Matiz', 'Nuance')}.</strong> ` + esc(L(...NUANCE[B.main])) + (ant ? ' ' + esc(L(...NUANCE_ANT)) : '');
+  // Comparison table
+  const q = conjugate('querer');
+  const rows = [];
+  for (const lane of ['pres', 'past']) {
+    const target = lane === 'pres' ? (ant ? 'perfSubj' : 'presSubj') : (ant ? 'pluscSubj' : 'impfSubj');
+    const sub = formsFor(r, target, B.p)[0];
+    for (const [k, n] of LANES[lane]) {
+      const t = translateBuilder(k, ant, B.p, r.inf);
+      rows.push(`<tr class="${lane === 'pres' ? 'row-pres' : 'row-past'}${k === B.main ? ' is-current' : ''}"><th scope="row">${n}</th>
+        <td lang="es">Mi profesora ${esc(q[k][2])} que ${shortOf(B.p)}${ant ? ' ya' : ''} ${esc(sub)}.</td>
+        <td lang="en">${t ? esc(t.main) + (t.alt ? `<br><span class="alt-en">${L('o', 'or')}: ${esc(t.alt)}</span>` : '') : '—'}</td></tr>`);
+    }
+  }
+  $('#b-compare-table').innerHTML = `<thead><tr><th scope="col">${L('Verbo principal', 'Main verb')}</th><th scope="col">${L('Español', 'Spanish')}</th><th scope="col">${L('Inglés', 'English')}</th></tr></thead><tbody>${rows.join('')}</tbody>`;
 }
 
 /* ===== Conjugador ===== */
